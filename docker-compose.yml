@@ -1,0 +1,62 @@
+services:
+  database:
+    container_name: deltiologue_database
+    build:
+      context: ./deltiologue
+      dockerfile: docker/postgis/Dockerfile
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    networks:
+      - deltiologue
+    volumes:
+      - deltiologue_pgdata:/data/postgres
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d deltiologue -U deltiologue"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+  server:
+    container_name: deltiologue_server
+    build:
+      context: ./deltiologue
+      dockerfile: docker/server/Dockerfile
+    ports:
+      - 8080:8080
+    networks:
+      - deltiologue
+    volumes:
+      - deltiologue_app_data:/var/deltiologue/data
+    restart: unless-stopped
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/healthz | grep OK || exit 1"
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+  ui:
+    container_name: deltiologue_ui
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:5173
+    networks:
+      - deltiologue
+
+
+networks:
+  deltiologue:
+    driver: bridge
+    enable_ipv6: true
+
+volumes:
+  deltiologue_pgdata:
+  deltiologue_app_data:

@@ -1,0 +1,58 @@
+ Volume in drive C is TI30875400B
+ Volume Serial Number is 2EDF-9778
+
+ Directory of C:\Users\Val\Documents\Postcards\Slideshow
+
+04/05/2014  22:01    <DIR>          .
+04/05/2014  22:01    <DIR>          ..
+02/01/2014  21:35           429,863 100 Eidsforth Terrace, East End, Morecambe (front).jpeg
+03/01/2014  11:19           611,367 108 Excurson Plattform (front).jpeg
+06/01/2014  17:24           727,991 129 An Old Corner at Heysham (front).jpeg
+06/01/2014  17:28           402,360 130 Tower & Casino, Morecambe (front).jpeg
+06/01/2014  17:39           487,620 132 West End Pier, Morecambe (front).jpeg
+07/01/2014  17:58           722,523 136 Bare Village, Morecambe (front).jpeg
+09/01/2014  17:54           331,305 139 Heysham Harbour (front).jpeg
+15/01/2014  16:45           437,173 146 Promenade and Alhambra, Morecambe (front).jpeg
+01/02/2014  23:57           349,385 148 Morecambe Carnival (front).jpeg
+02/02/2014  01:21           424,356 155 Old Harbour, Morecambe 1848 - 1914 (front).jpeg
+02/02/2014  01:52           583,005 159 Manxman Heysham Harbour (front).jpeg
+02/01/2014  02:28           482,763 16 New Motor Train bound for Heysham Harbour (front).jpeg
+08/03/2014  14:19           412,160 162 Damage done to the Promenade, Sandylands, 1926 (front).jpeg
+08/03/2014  14:31           691,544 163 West End Stores, Picture Post Cards and Presents, Opposite W.E. Post Office, Morecambe (front).jpeg
+08/03/2014  14:36           257,202 164 On the Canal, Hest Bank (front).jpeg
+08/03/2014  14:55           541,131 165 Central Promande & Bandstand, Morecambe (front).jpeg
+02/01/2014  02:34           382,195 17 Central Morecambe Looking West (front).jpeg
+15/03/2014  21:44           312,480 171 Heysham Harbour, near Morecambe (front).jpeg
+15/03/2014  21:59           373,361 173 West End Pier, Morecambe (front).jpeg
+15/03/2014  22:08           610,851 174 Bare Village near Morecambe (front).jpeg
+03/04/2014  11:38           436,694 175 The Quay, Heysham Harbour (front).jpeg.jpeg
+03/04/2014  11:51           385,347 176 The Bay, Morecambe (front).jpeg
+03/04/2014  12:08           413,326 178 Bare Lane Station (front).jpeg
+03/04/2014  12:19           414,178 179 The Crescent, Morecambe (front).jpeg
+04/04/2014  12:00           404,330 180 Wreckage Sandylands (front).jpeg
+12/04/2014  23:45           849,234 181 Midland Station, Heysham (front).jpeg
+17/04/2014  13:15           522,508 182 West End Pier, Morecambe, after storm, February 27th, 1903 (front).jpeg
+17/04/2014  13:18           416,325 183 Central Promenade, Morecambe (front).jpeg
+03/05/2014  15:09           409,568 189 Morecambe, West End (front).jpeg
+03/05/2014  15:23           345,201 190 Charles Street, Great Flood at Morecambe (front).jpeg
+02/01/2014  03:02           373,813 22 Winter Gardens, Looking East, Morecambe (front).jpeg
+02/01/2014  03:14           363,370 24 The Tower, Morecambe (front).jpeg
+02/01/2014  04:37           357,689 37 Promenade, Looking East, Morecambe (front).jpeg
+02/01/2014  01:05           407,479 4 The Old Saxon Ruins, Heysham Church.jpeg
+02/01/2014  01:14           547,528 5 Central Promenade, Morecambe (front).jpeg
+02/01/2014  06:05           221,900 50 Heysham Village (front).jpeg
+02/01/2014  06:10           418,556 51 Sorting and Bagging Mussels, Morecambe Staple Industry (front).jpeg
+02/01/2014  06:32           405,065 54 Ox Roasting, Morecambe Carnival (front).jpeg
+02/01/2014  06:38           311,261 55 Westminster Road, West End, Morecambe (front).jpeg
+02/01/2014  06:46           334,380 56 The Foot Bridge, Hest Bank (front).jpeg
+02/01/2014  06:51           419,390 57 Midland Railway Station Morecambe (front).jpeg
+02/01/2014  07:26           405,177 63 Stone Coffins, Heysham Church (front).jpeg
+02/01/2014  07:31           374,184 64 Greece Cottage, Heysham (front).jpeg
+02/01/2014  07:45           446,749 66 Morecambe Rocks and Bathing Ground (front).jpeg
+02/01/2014  19:23           602,446 80 Bare Village (front).jpeg
+02/01/2014  21:16           458,047 96 Langdale Terrace, Sandylands, Morecambe (front).jpeg
+02/01/2014  21:21           464,048 97 Central Promenade, Morecambe (front).jpeg
+02/01/2014  21:30           497,952 99 Morecambe W.E. from Battery Corner (front).jpeg
+04/05/2014  22:01                 0 slideshow.txt
+              49 File(s)     21,576,380 bytes
+               2 Dir(s)  242,628,468,736 bytes free
