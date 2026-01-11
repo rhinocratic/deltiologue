@@ -30,7 +30,7 @@ services:
     networks:
       - deltiologue
     volumes:
-      - deltiologue_app_data:/var/deltiologue/data
+      - deltiologue_app_data:/usr/src/app/data
     restart: unless-stopped
     healthcheck:
       test: "curl --fail --silent localhost:8080/healthz | grep OK || exit 1"
@@ -43,19 +43,17 @@ services:
     container_name: deltiologue_ui
     build:
       context: ./ui
-      dockerfile: Dockerfile
+      dockerfile: docker/Dockerfile
     environment:
       NODE_ENV: production
     ports:
-      - 3000:5173
+      - 5173:5173
     networks:
       - deltiologue
 
 
 networks:
   deltiologue:
-    driver: bridge
-    enable_ipv6: true
 
 volumes:
   deltiologue_pgdata:
