@@ -12,6 +12,7 @@
 ;; Start logging
 (defmethod ig/init-key ::logger
   [_ config]
+  (println "Starting logger")
   (let [publishers (log/start-logging! config)]
     (u/log ::logger-started :message "Started logging")
     publishers))
@@ -25,6 +26,7 @@
 ;; Get a database connection pool
 (defmethod ig/init-key ::db
   [_ {:keys [datasource] :as _config}]
+  (println "Starting DB")
   (u/log ::open-database-pool :message "Connecting to database")
   (db/pooled-datasource datasource))
 
@@ -37,12 +39,14 @@
 ;; Create the application routes
 (defmethod ig/init-key ::app
   [_ {:keys [profile db]}]
+  (println "Creating routes")
   (u/log ::create-app :message "Creating application routes")
   (router/app profile db))
 
 ;; Start the server
 (defmethod ig/init-key ::app-server
   [_ config]
+  (println "Starting server")
   (u/log :message ::start-app-server "Starting app server")
   (srv/start config))
 

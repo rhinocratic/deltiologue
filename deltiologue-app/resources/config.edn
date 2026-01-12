@@ -25,7 +25,7 @@
                :connectionInitSql  "COMMIT;" ;; Included because of this issue: https://github.com/brettwooldridge/HikariCP/issues/1369
                :password           #profile {:dev  #or [#env DELTIOLOGUE_PGPASSWORD #ref [:secrets :deltiologue-db-password-dev]]
                                              :prod #or [#env DELTIOLOGUE_PGPASSWORD #ref [:secrets :deltiologue-db-password-prod]]}
-               :host               "localhost"
+               :host               #or [#env DELTIOLOGUE_PGHOST "localhost"]
                :port               #profile {:dev  5432
                                              :prod 5432}
                :auto-commit        true
