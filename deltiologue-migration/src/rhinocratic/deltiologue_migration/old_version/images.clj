@@ -5,21 +5,27 @@
    [clojure.string :as string]
    [clojure.java.shell :as shell]))
 
-(def image-source-folder "resources/legacy/postcards/")
-(def image-dest-folder "../deltiologue/data/images/postcards/")
+(def postcard-image-source-folder "/home/vlad/gdrive/vlad/postcard-data/Postcards/")
+(def postcard-image-dest-folder "../deltiologue-server/data/images/postcards/")
+(def postcard-images "../deltiologue-server/data/images/postcards")
+(def note-images "../deltiologue-server/data/images/notes")
+(def volname "deltiologue_deltiologue_app_data")
 
 (defn source-image-files
   []
-  (.list (io/as-file image-source-folder)))
+  (->> (io/as-file postcard-image-source-folder)
+       (.listFiles)
+       (filter #(.isFile %))
+       (map #(.getName %))))
 
 (defn create-urls
   [file]
   (let [rgx #"(\d+)[^(]+\(([^\)]+)\)"
         fname (.getName file)
         [_ idx face] (re-find rgx fname)]
-    {:front (str "/images/postcards/" idx "/front.jpg")
-     :rear (str "/images/postcards/" idx "/rear.jpg")
-     :thumb (str "/images/postcards/" idx "/thumb.jpg")}))
+    {:front (str "/images/postcards/" (dec idx) "/front.jpg")
+     :rear (str "/images/postcards/" (dec idx) "/rear.jpg")
+     :thumb (str "/images/postcards/" (dec idx) "/thumb.jpg")}))
 
 (defn image-index
   [fname]
@@ -54,11 +60,15 @@
 
 (defn copy-image
   [src-fname]
-  (let [idx (re-find #"^\d+" src-fname)
-        src-file (io/as-file (str image-source-folder src-fname))
+  (let [idx (->> src-fname
+                 (re-find #"^\d+")
+                 parse-long
+                 dec
+                 str)
+        src-file (io/as-file (str postcard-image-source-folder src-fname))
         dest-file (cond
-                    (front? src-fname) (io/as-file (str image-dest-folder "/" idx "/front.jpg"))
-                    (rear? src-fname) (io/as-file (str image-dest-folder "/" idx "/rear.jpg")))]
+                    (front? src-fname) (io/as-file (str postcard-image-dest-folder "/" idx "/front.jpg"))
+                    (rear? src-fname) (io/as-file (str postcard-image-dest-folder "/" idx "/rear.jpg")))]
     (io/make-parents dest-file)
     (io/copy src-file dest-file)
     (.getPath dest-file)))
@@ -70,11 +80,15 @@
 
 (defn make-thumbnail
   [fname]
-  (let [idx (re-find #"^\d+" fname)
-        source-path (->> image-source-folder
+  (let [idx (->> fname
+                 (re-find #"^\d+")
+                 parse-long
+                 dec
+                 str)
+        source-path (->> postcard-image-source-folder
                          io/as-file
                          (.getCanonicalPath))
-        dest-path (->> image-dest-folder
+        dest-path (->> postcard-image-dest-folder
                        io/as-file
                        (.getCanonicalPath))
         source-vol (str source-path ":/sources")
@@ -85,6 +99,7 @@
                 "docker"
                 "run"
                 "--entrypoint=magick"
+                "--rm"
                 "-v"
                 source-vol
                 "-v"
@@ -96,15 +111,83 @@
                 dest-file)]
     (assoc result :idx idx)))
 
-(defn make-thumbnails
+(defn dest-indexes
   []
-  (let [fronts (->> (source-image-files)
-                    (filter front?))]
+  (->> (io/as-file postcard-image-dest-folder)
+       (.listFiles)
+       (filter #(.isDirectory %))
+       (map #(.getName %))
+       (map parse-long)
+       sort
+       set))
+
+(defn new-images
+  []
+  (let [dest-index-exists? (dest-indexes)
+        new? (fn [file] (-> file
+                            image-index
+                            dest-index-exists?
+                            not))]
+    (->> (source-image-files)
+         (filter new?))))
+
+(defn delete-volume
+  []
+  (println "Deleting volume")
+  (shell/sh
+   "docker"
+   "volume"
+   "rm"
+   volname
+   "-f"))
+
+(defn create-volume
+  []
+  (println "Creating volume")
+  (shell/sh
+   "docker"
+   "run"
+   "-v"
+   (str volname ":/images")
+   "--name"
+   "helper"
+   "busybox"
+   "true"))
+
+(defn populate-volume
+  []
+  (println "Populating volume")
+  (shell/sh
+   "docker"
+   "cp"
+   postcard-images
+   "helper:/images")
+  (shell/sh
+   "docker"
+   "cp"
+   note-images
+   "helper:/images"))
+
+(defn delete-helper
+  []
+  (println "Deleting helper container")
+  (shell/sh
+   "docker"
+   "rm"
+   "helper"))
+
+(defn update-images
+  []
+  (let [new (new-images)
+        fronts (->> new (filter front?))]
+    (println "Found" (count fronts) "new images.")
+    (doall (map copy-image new))
     (doall (map make-thumbnail fronts))))
 
-(comment
-
-  (tap> (make-thumbnails))
-
-
-  #_())
+;; NB - stop application containers before running this
+(defn recreate-volume
+  []
+  (delete-volume)
+  (create-volume)
+  (populate-volume)
+  (delete-helper))

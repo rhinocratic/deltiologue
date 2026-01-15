@@ -1,5 +1,6 @@
 (ns rhinocratic.deltiologue.web.api.handlers
   (:require
+   [clojure.string :as string]
    [reitit.core :as r]
    [rhinocratic.deltiologue.db.queries :as q]
    [cheshire.core :as json]))
@@ -18,19 +19,52 @@
      (nil? item) {:status 404}
      :else {:status status :body item})))
 
-(defn fetch-all-card-summaries
+(defn card-summary
   "Fetch all card summaries"
   [conn _req]
   []
-  (let [summaries (q/all-card-summaries conn)]
+  (let [summaries (q/card-summary conn)]
     (with-status summaries)))
 
-(defn fetch-card-by-number
+(defn card
   "Fetch a postcard by number"
   [conn req]
   (let [card-id (get-in req [:parameters :path :card-no])
-        card (q/card-by-number conn card-id)]
+        card (q/card conn card-id)]
     (with-status card)))
+
+(defn- map-by-initial
+  [m {:keys [title] :as note}]
+  (let [initial (str (first title))
+        k (if (re-matches #"[0-9]" initial) "0-9" initial)]
+    (update m k #((fnil conj []) %1 %2) note)))
+
+(defn- sort-note-summaries
+  [summaries]
+  (->> summaries
+       (sort-by :title)
+       (reduce map-by-initial (sorted-map))))
+
+(defn note-summaries
+  "Fetch summaries of all notes"
+  [conn _req]
+  (let [summary (q/note-summaries conn)
+        sorted (sort-note-summaries summary)]
+    {:status 200 :body sorted}))
+
+(defn note
+  "Fetch a note by ID"
+  [conn req]
+  (let [note-id (get-in req [:parameters :path :note-id])
+        note (q/note conn note-id)]
+    (with-status note)))
+
+(defn references
+  "Fetch all references"
+  [conn _req]
+  (let [references (q/references conn)]
+    {:status 200
+     :body references}))
 
 (defn search
   "Search for cards"
@@ -39,7 +73,29 @@
         results (q/search conn terms)]
     (with-status results)))
 
+(defn upload-front-image
+  [{{{:keys [file]} :multipart} :parameters}]
+  {:status 200
+   :body {:name (:filename file)
+          :size (:size file)}})
+
+(defn upload-rear-image
+  [{{{:keys [file]} :multipart} :parameters}]
+  {:status 200
+   :body {:name (:filename file)
+          :size (:size file)}})
+
+(defn upload-other-image
+  [{{{:keys [file]} :multipart} :parameters}]
+  {:status 200
+   :body {:name (:filename file)
+          :size (:size file)}})
+
 (comment
+
+  (let [conn (:rhinocratic.deltiologue/db (user/system))]
+    (->> (references conn nil)
+         tap>))
 
   #_())
 

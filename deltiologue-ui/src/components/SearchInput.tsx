@@ -8,7 +8,7 @@ export default function SearchInput() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    navigate(`/results?q=${term}`);
+    navigate(`/search?term=${term}`);
   };
 
   return (
@@ -20,7 +20,6 @@ export default function SearchInput() {
         <input
           value={term}
           onChange={(e) => {
-            console.log(term);
             setTerm(e.target.value);
           }}
           placeholder="search postcards"

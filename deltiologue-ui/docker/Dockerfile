@@ -9,6 +9,8 @@ RUN npm install
 
 COPY . .
 
+RUN rm -rf /app/public/images
+
 RUN npm run build
 
 EXPOSE 5173

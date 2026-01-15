@@ -10,8 +10,6 @@
            compojure/compojure                 {:mvn/version "1.7.2"}
            metosin/reitit                      {:mvn/version "0.10.0"}
            ring/ring                           {:mvn/version "1.15.3"}
-           ring/ring-defaults                  {:mvn/version "0.7.0"}
-           ring/ring-mock                      {:mvn/version "0.6.2"}
 
            ;; DB
            net.postgis/postgis-jdbc            {:mvn/version "2025.1.1"}

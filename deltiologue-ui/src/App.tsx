@@ -1,10 +1,14 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root from "./pages/Root";
 import HomePage from "./pages/home/HomePage";
-import DetailPage from "./pages/detail/DetailPage";
-import SearchResultsPage from "./pages/search-results/SearchResultsPage";
+import DetailsPage from "./pages/details/DetailsPage";
+import SearchPage from "./pages/search/SearchPage";
 import LinksPage from "./pages/links/LinksPage";
 import NotesPage from "./pages/notes/NotesPage";
+import { searchLoader } from "./pages/search/searchLoader";
+import { detailsLoader } from "./pages/details/detailsLoader";
+import { noteCatalogueLoader } from "./pages/notes/noteCatalogueLoader";
+
 
 const router = createBrowserRouter([
   {
@@ -16,16 +20,19 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/detail",
-        element: <DetailPage />,
+        path: "/details/:index",
+        element: <DetailsPage />,
+        loader: detailsLoader
       },
       {
-        path: "/results",
-        element: <SearchResultsPage />,
+        path: "/search",
+        element: <SearchPage />,
+        loader: searchLoader
       },
       {
         path: "/notes",
         element: <NotesPage />,
+        loader: noteCatalogueLoader
       },
       {
         path: "/links",

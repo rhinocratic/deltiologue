@@ -19,7 +19,7 @@
   (datafy [g]
     (d/datafy (.getGeometry g))))
 
-(defn all-card-summaries
+(defn card-summary
   [conn]
   (let [sql (-> (h/select :p/collection-index
                           :p/subject-description)
@@ -27,7 +27,7 @@
                 (sql/format))]
     (jdbc/execute! conn sql {:builder-fn rs/as-unqualified-maps})))
 
-(defn card-by-number
+(defn card
   [conn card-id]
   (let [sql (-> (h/select :p/collection-index
                           :p/divided-back
@@ -40,7 +40,6 @@
                           :p/image-rear
                           :p/image-rear_alt
                           :p/image-thumb
-                          :p/image-thumb-alt
                           :p/publication-year
                           :p/publication-month
                           :p/publication-day
@@ -79,14 +78,62 @@
   [conn terms]
   (let [sql (-> (h/select :p/collection-index
                           :p/subject-description
-                          :p/image-thumb
-                          :p/image-thumb-alt)
+                          :p/image-thumb)
                 (h/from [:postcard :p] [[:to_tsquery terms] :ts])
                 (h/where [pgo/atat :p/fts :ts])
                 (sql/format))
         results (jdbc/execute! conn sql {:builder-fn rs/as-unqualified-maps})]
-    (tap> results)
-    results))
+    {:results results
+     :count (count results)}))
+
+(defn note-summaries
+  [conn]
+  (let [sql (-> (h/select :n/id
+                          :n/title)
+                (h/from [:note :n])
+                (sql/format))]
+    (jdbc/execute! conn sql {:builder-fn rs/as-unqualified-maps})))
+
+(defn note-references
+  [conn note-id]
+  (let [sql (-> (h/select :r/idx
+                          :r/medium
+                          :r/accessed
+                          :r/source
+                          :r/title
+                          :r/issue-date
+                          :r/issue-note
+                          :r/available)
+                (h/from [:reference :r])
+                (h/join [:note-reference :nr] [:= :nr.reference-id :r.id])
+                (h/where [:= :nr/note-id note-id])
+                (sql/format))]
+    (jdbc/execute! conn sql {:builder-fn rs/as-unqualified-maps})))
+
+(defn note
+  [conn note-id]
+  (let [sql (-> (h/select :n/title
+                          :n/body)
+                (h/from [:note :n])
+                (h/where [:= :n/id note-id])
+                (sql/format))
+        note (jdbc/execute-one! conn sql {:builder-fn rs/as-unqualified-maps})]
+    (merge note {:references (note-references conn note-id)})))
+
+(defn references
+  [conn]
+  (let [sql (-> (h/select :r/idx
+                          :r/medium
+                          :r/accessed
+                          :r/source
+                          :r/title
+                          :r/issue-date
+                          :r/issue-note
+                          :r/available)
+                (h/from [:reference :r])
+                (sql/format))]
+    (jdbc/execute! conn sql {:builder-fn rs/as-unqualified-maps})))
+
 
 (comment
 

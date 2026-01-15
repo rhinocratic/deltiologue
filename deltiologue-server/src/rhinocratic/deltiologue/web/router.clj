@@ -59,7 +59,8 @@
   (let [rtr (router profile db)
         site-routes (ring/routes
                      (swagger-ui/create-swagger-ui-handler {:path "/api-docs"})
-                     (ring/create-resource-handler {:path "/"})
+                     (ring/create-resource-handler {:path "/"
+                                                    :allow-symlinks? true})
                      (ring/create-default-handler))
         handler-fn (fn [] (ring/ring-handler (rtr) site-routes))]
     (condp = profile

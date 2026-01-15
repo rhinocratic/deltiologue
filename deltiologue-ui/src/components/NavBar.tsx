@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import LoginBar from "./LoginBar";
 import SearchInput from "./SearchInput";
 
@@ -15,15 +16,15 @@ export default function NavBar() {
       </div>
       <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
         <div className="text-sm lg:flex-grow">
-          <a href="/" className="block mt-4 lg:inline-block lg:mt-0 text-stone-600  hover:text-red-900 mr-4">
+          <Link to="/" className="block mt-4 lg:inline-block lg:mt-0 text-stone-600  hover:text-red-900 mr-4">
             Home
-          </a>
-          <a href="/notes" className="block mt-4 lg:inline-block lg:mt-0 text-stone-600 hover:text-red-900 mr-4">
+          </Link>
+          <Link to="/notes" className="block mt-4 lg:inline-block lg:mt-0 text-stone-600 hover:text-red-900 mr-4">
             Notes
-          </a>
-          <a href="/links" className="block mt-4 lg:inline-block lg:mt-0 text-stone-600  hover:text-red-900">
+          </Link>
+          <Link to="/links" className="block mt-4 lg:inline-block lg:mt-0 text-stone-600  hover:text-red-900">
             Links
-          </a>
+          </Link>
         </div>
 
         {/* <div>

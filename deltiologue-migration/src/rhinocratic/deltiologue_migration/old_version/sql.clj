@@ -8,6 +8,7 @@
    [camel-snake-kebab.core :as csk]
    [rhinocratic.deltiologue-migration.old-version.spreadsheet :as spreadsheet]
    [rhinocratic.deltiologue-migration.old-version.notes :as notes]
+   [rhinocratic.deltiologue-migration.old-version.manual :as manual]
    [rhinocratic.deltiologue-migration.old-version.transform :as transform]
    [rhinocratic.deltiologue-migration.old-version.collate :as collate]))
 
@@ -27,6 +28,9 @@
    :image              [:url
                         :title
                         :alt-text]
+   :note-image         [:filename
+                        :caption
+                        :alt-text]
    :postcard           [:collection-index
                         :divided-back
                         :rp
@@ -38,7 +42,6 @@
                         :image-rear
                         :image-rear-alt
                         :image-thumb
-                        :image-thumb-alt
                         :publication-year
                         :publication-month
                         :publication-day
@@ -65,7 +68,8 @@
                         :stamp-id
                         :stamp-condition]
    :slideshow          [:postcard-id]
-   :note               [:note-text]
+   :note               [:title
+                        :body]
    :reference          [:idx
                         :medium
                         :accessed
@@ -93,6 +97,7 @@
    :recipient
    :publisher
    :note
+   :note-image
    :reference
    :note-reference
    :image
@@ -122,7 +127,7 @@
 
 (defn seed-db
   [connection]
-  (let [rows (->> (merge (spreadsheet/parse) (notes/parse))
+  (let [rows (->> (merge (spreadsheet/parse) (notes/parse) (manual/tables))
                   transform/transform
                   collate/collate)]
     (truncate-tables connection)
@@ -138,13 +143,16 @@
   (require '[rhinocratic.deltiologue-migration.old-version.spreadsheet :as spreadsheet]
            '[rhinocratic.deltiologue-migration.old-version.notes :as notes]
            '[rhinocratic.deltiologue-migration.old-version.transform :as transform]
+           '[rhinocratic.deltiologue-migration.old-version.manual :as manual]
            '[rhinocratic.deltiologue-migration.old-version.collate :as collate])
 
-  (def m (->> (merge (spreadsheet/parse) (notes/parse))
+  (def m (->> (merge (spreadsheet/parse) (notes/parse) (manual/tables))
               transform/transform
               collate/collate))
 
   (tap> m)
+
+  (tap> (:note m))
 
   (seed-db {#_datasource})
 
