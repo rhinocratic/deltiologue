@@ -69,11 +69,14 @@
            (not (re-find #"\?+" (str date)))
            (not (re-find #"NK" (str date)))
            (not (re-find #"Unfranked" (str date)))
-           (not (re-find #"Not known" (str date))))
+           (not (re-find #"Not known" (str date)))
+           (not (re-find #"Undated" (str date))))
     (let [date-str (str date)
           [_ approx yr] (re-find #"([cC]\s*)?(\d{4})" date-str)
           [_ _ d _ m y] (re-find #"((\d{1,2})\s+)?((\w+)\s+)?(\d{4})" date-str)
-          y (parse-long (or y yr 0))
+          y (parse-long (or y yr "1999"))
+          _ (when (= y "1999")
+              (println "Rogue date:" date))
           m (months (if m (string/lower-case m) nil))
           d (when d (parse-long d))
           instant (cond
@@ -320,6 +323,10 @@
     (assoc m :references nil)
     (assoc m :references v)))
 
+(defmethod transform-field :alt-text
+  [_ m _k v]
+  (assoc m :image-front-alt v))
+
 (defmethod transform-field :default
   [_ m _k _v]
   m)
@@ -331,19 +338,16 @@
        (map-indexed #(assoc %2 :postcard-id %1))
        (map-indexed #(assoc %2
                             :image-front (* 3 %1)
-                            :image-front-alt ""
                             :image-rear (+ 1 (* 3 %1))
                             :image-rear-alt ""
                             :image-thumb (+ 2 (* 3 %1))
-                            :image-thumb-alt ""
                             :transcript ""))))
 
 
 (defn make-note-lookup
   [{:keys [note]}]
   (->> note
-       (map :note-text)
-       (map #(second (re-find #"##\s([^\n]+)" %)))
+       (map :title)
        (map #(-> (string/lower-case %)
                  (string/replace #"[,–’/]" "")
                  (string/replace #"\s+" "-")))
@@ -357,3 +361,20 @@
     (-> data
         (update :card transform-cards note-lookup)
         (assoc :image images))))
+
+(comment
+
+  (require '[rhinocratic.deltiologue-migration.old-version.spreadsheet :as spread]
+           '[rhinocratic.deltiologue-migration.old-version.notes :as notes])
+
+  (let [spread (spread/parse)
+        nts (notes/parse)
+        merged (merge spread nts)
+        transformed (transform merged)]
+    (tap> (-> (:card transformed)
+              (nth 647)
+              :posted-date)))
+
+  (tap> (images/image-table))
+
+  #_())

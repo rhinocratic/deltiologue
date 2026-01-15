@@ -1,0 +1,20 @@
+meta {
+  name: Upload image
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/image/upload
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  file: @file(/home/vlad/Pictures/hawthorn-small.png)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

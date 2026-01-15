@@ -57,6 +57,14 @@ create table if not exists image (
     unique(url)
 );
 --;;
+create table if not exists note_image (
+    id int generated always as identity (minvalue 0 start with 0 increment by 1),
+    filename text not null,
+    alt_text text not null,
+    caption text not null,
+    primary key(id)
+);
+--;;
 create table if not exists postcard (
     id int generated always as identity (minvalue 0 start with 0 increment by 1),
     collection_index int not null,
@@ -70,7 +78,6 @@ create table if not exists postcard (
     image_rear int,
     image_rear_alt text,
     image_thumb int,
-    image_thumb_alt text,
     publication_year int,
     publication_month int,
     publication_day int,
@@ -93,6 +100,7 @@ create table if not exists postcard (
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp,
     primary key(id),
+    unique(collection_index),
     constraint fk_postcard_image_front foreign key(image_front) references image(id) on delete cascade,
     constraint fk_postcard_image_rear foreign key(image_rear) references image(id) on delete cascade,
     constraint fk_postcard_image_thumb foreign key(image_thumb) references image(id) on delete cascade,
@@ -100,6 +108,13 @@ create table if not exists postcard (
     constraint fk_postcard_recipient foreign key(recipient) references recipient(id) on delete cascade,
     constraint fk_postcard_series foreign key(series) references series(id) on delete cascade
 );
+--;;
+alter table postcard add column fts tsvector
+generated always as
+(setweight(to_tsvector('english', coalesce(subject_description, '')), 'A') ||
+ setweight(to_tsvector('english', coalesce(notes, '')), 'B')) STORED;
+--;;
+create index idx_postcard_fts_gin on postcard using gin (fts);
 --;;
 create index idx_postcard_location on postcard using gist (geography(subject_location));
 --;;
@@ -141,7 +156,8 @@ create index idx_postcard_tag_tag_category on postcard_tag(tag_category_id);
 --;;
 create table if not exists note (
     id int generated always as identity (minvalue 0 start with 0 increment by 1),
-    note_text text,
+    title text,
+    body text,
     primary key(id)
 );
 --;;
@@ -172,4 +188,17 @@ create table if not exists note_reference (
 create index idx_note_reference_note on note_reference(note_id);
 --;;
 create index idx_note_reference_reference on note_reference(reference_id);
+--;;
+--;;
+create or replace function card_tags(card_id int)
+returns table (tag_name text, display_text text, tag_category text)
+as
+$$
+select t.tag_name, t.display_text, c.display_text
+from postcard_tag pt
+left join tag t on pt.tag_id = t.id
+left join tag_category c on pt.tag_category_id = c.id
+where pt.postcard_id = card_id;
+$$
+language 'sql' stable parallel safe;
 --;;

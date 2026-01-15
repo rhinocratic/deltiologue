@@ -3,3 +3,4 @@
 .calva
 .~lock*
 .env
+/public/images

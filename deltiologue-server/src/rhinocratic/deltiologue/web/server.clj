@@ -4,4 +4,5 @@
 
 (defn start
   [{:keys [port join app]}]
-  (jetty/run-jetty app {:port port :join? join}))
+  (jetty/run-jetty app {:port port
+                        :join? join}))

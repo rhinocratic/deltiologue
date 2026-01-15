@@ -34,12 +34,11 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
-      - deltiologue_app_data:/usr/src/app/data
+      - deltiologue_app_data:/usr/src/app/data/images
     restart: unless-stopped
     depends_on:
       database:
         condition: service_healthy
-        restart: true
     healthcheck:
       test: ["CMD-SHELL", "curl --fail --silent http://localhost:8080/healthz | grep OK || exit 1"]
       interval: 30s
@@ -56,6 +55,8 @@ services:
       - .env
     ports:
       - 5173:5173
+    volumes:
+      - deltiologue_app_data:/app/public/images
     depends_on:
       server:
         condition: service_healthy

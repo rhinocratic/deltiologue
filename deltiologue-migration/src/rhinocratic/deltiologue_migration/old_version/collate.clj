@@ -154,7 +154,6 @@
                                 :image-rear
                                 :image-rear-alt
                                 :image-thumb
-                                :image-thumb-alt
                                 :publication-year
                                 :publication-month
                                 :publication-day
@@ -211,14 +210,17 @@
         tag-category-position (->> tag-category-keys
                                    (map-indexed #(vector %2 %1))
                                    (into {}))
-        tag-categories [{:category-name "notable_buildings" :display-text "Notable Buildings"}
-                        {:category-name "location" :display-text "Location"}
-                        {:category-name "area_primary" :display-text "Primary Area"}
-                        {:category-name "misc" :display-text "Miscellaneous"}
-                        {:category-name "transport" :display-text "Transport"}
-                        {:category-name "work" :display-text "Work"}
-                        {:category-name "events" :display-text "Events"}
-                        {:category-name "area_secondary" :display-text "Secondary Area"}]
+        cat-display {:notable-buildings "Notable Buildings"
+                     :location "Location"
+                     :area-primary "Primary Area"
+                     :misc "Miscellaneous"
+                     :transport "Transport"
+                     :work "Work"
+                     :events "Events"
+                     :area-secondary "Secondary Area"}
+        tag-categories (->> tag-category-keys
+                            (mapv #(hash-map :category-name (string/replace (name %) "-" "_")
+                                             :display-text (get cat-display %))))
         postcard-tags (->> merged
                            (map-indexed (fn [id [[category tag] {:keys [cards tag-text]}]]
                                           (map
@@ -257,13 +259,15 @@
            '[rhinocratic.deltiologue-migration.old-version.notes :as notes]
            '[rhinocratic.deltiologue-migration.old-version.transform :as transform])
 
-  (def m (->> (merge (spreadsheet/parse) (notes/parse))
-              (transform/transform)))
+  (def m (->> (merge
+               (spreadsheet/parse)
+               (notes/parse)
+               (transform/transform))))
 
-  (def collated (collate m))
+  (tap> (merged-tags (:card m)))
 
   (tap> (collate m))
 
-  (tap> m)
+  (tap> (keys m))
 
   #_())

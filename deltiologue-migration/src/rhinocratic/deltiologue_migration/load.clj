@@ -7,6 +7,7 @@
    [rhinocratic.deltiologue-migration.old-version.transform :refer [transform]]
    [rhinocratic.deltiologue-migration.old-version.collate :refer [collate]]
    [rhinocratic.deltiologue-migration.old-version.sql :refer [seed-db truncate-db]]
+   [rhinocratic.deltiologue-migration.old-version.images :as images]
    [rhinocratic.deltiologue-migration.config :as conf])
   (:import (com.zaxxer.hikari HikariDataSource)))
 
@@ -34,3 +35,11 @@
                    (get-in [:rhinocratic.deltiologue/db :datasource]))]
     (with-open [datasource (pooled-datasource config)]
       (truncate-db datasource))))
+
+(defn update-images
+  [_]
+  (images/update-images))
+
+(defn recreate-volume
+  [_]
+  (images/recreate-volume))

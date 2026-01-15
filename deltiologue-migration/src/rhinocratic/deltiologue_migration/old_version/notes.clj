@@ -192,15 +192,15 @@
          (map markdown-run)
          (apply str))))
 
-(defn make-section
+(defn make-note
   [paras]
   (let [[heading & others] paras
-        markdown (-> [(str "## " (.getText ^XWPFParagraph heading) "\n\n")]
-                     (conj (->> others
-                                (map markdown-para)
-                                (string/join "\n\n")))
-                     (#(apply str %)))]
-    markdown))
+        title (.getText ^XWPFParagraph heading)
+        body (->> others
+                  (map markdown-para)
+                  (string/join "\n\n"))]
+    {:title title
+     :body body}))
 
 (defn parse-body
   [^XWPFDocument doc]
@@ -217,8 +217,7 @@
         notes (->> paras
                    (remove reference?)
                    split-by-title
-                   (map make-section)
-                   (map #(hash-map :note-text %)))
+                   (map make-note))
         ref-indexes (->> references
                          (map-indexed #(vector (:idx %2) %1))
                          (into {}))

@@ -1,0 +1,20 @@
+meta {
+  name: Get card details
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/card/:id/detail
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 42
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
