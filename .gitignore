@@ -4,3 +4,5 @@
 .~lock*
 .env
 /public/images
+node_modules
+dist

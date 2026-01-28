@@ -73,19 +73,8 @@
         results (q/search conn terms)]
     (with-status results)))
 
-(defn upload-front-image
-  [{{{:keys [file]} :multipart} :parameters}]
-  {:status 200
-   :body {:name (:filename file)
-          :size (:size file)}})
-
-(defn upload-rear-image
-  [{{{:keys [file]} :multipart} :parameters}]
-  {:status 200
-   :body {:name (:filename file)
-          :size (:size file)}})
-
-(defn upload-other-image
+(defn upload-temp-image
+  "Upload an image to a temporary location"
   [{{{:keys [file]} :multipart} :parameters}]
   {:status 200
    :body {:name (:filename file)

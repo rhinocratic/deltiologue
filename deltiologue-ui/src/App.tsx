@@ -8,6 +8,7 @@ import NotesPage from "./pages/notes/NotesPage";
 import { searchLoader } from "./pages/search/searchLoader";
 import { detailsLoader } from "./pages/details/detailsLoader";
 import { noteCatalogueLoader } from "./pages/notes/noteCatalogueLoader";
+import { PrimeReactProvider } from 'primereact/api';
 
 
 const router = createBrowserRouter([
@@ -43,7 +44,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <PrimeReactProvider>
+      <RouterProvider router={router} />
+    </PrimeReactProvider>
+  );
 }
 
 export default App;

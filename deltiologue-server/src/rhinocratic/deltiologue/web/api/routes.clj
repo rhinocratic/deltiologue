@@ -9,18 +9,10 @@
   [conn]
   [["/image" {:swagger {:tags ["files"]}}
     ["/upload"
-     ["/front" {:post {:summary "upload the front image of a postcard"
-                       :parameters {:multipart {:file multipart/temp-file-part}}
-                       :responses {200 {:body {:name string?, :size int?}}}
-                       :handler #'h/upload-front-image}}]
-     ["/rear" {:post {:summary "upload the rear image of a postcard"
+     ["/temp" {:post {:summary "upload an image to a temporary location"
                       :parameters {:multipart {:file multipart/temp-file-part}}
                       :responses {200 {:body {:name string?, :size int?}}}
-                      :handler #'h/upload-rear-image}}]
-     "/other" {:post {:summary "upload a miscellaneous image"
-                      :parameters {:multipart {:file multipart/temp-file-part}}
-                      :responses {200 {:body {:name string?, :size int?}}}
-                      :handler #'h/upload-other-image}}]]
+                      :handler #'h/upload-temp-image}}]]]
    ["/card" {:swagger {:tags ["cards"]}}
     ["" {:name ::card-summary
          :get {:handler (partial #'h/card-summary conn)
