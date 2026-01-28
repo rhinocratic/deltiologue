@@ -1,28 +1,37 @@
 import { useLoaderData } from "react-router-dom";
 import { NoteCatalogue, NoteCatalogueItem } from "../../api/types/notes";
 import { NoteCatalogueLoaderResult } from "./noteCatalogueLoader";
+import { Accordion, AccordionTab } from 'primereact/accordion';
+import { Panel } from "primereact/panel";
 
 const renderedItems = (items: NoteCatalogueItem[]) => {
   return items.map(item => {
-    return <li key={item.id}>Key: {item.id} {item.title}</li>;
+    return (
+      <li key={item.id}>
+        <Panel>
+          {item.title}
+        </Panel>
+      </li>
+    );
   });
 };
 
 const renderedSection = (idx: string, items: NoteCatalogueItem[]) => {
   return (
-    <div>
-      {idx}
+    <AccordionTab header={idx}>
       <ul>
         {renderedItems(items)}
       </ul>
-    </div>
+    </AccordionTab>
   );
 };
 
 const renderedCatalogue = (cat: NoteCatalogue) => {
   const sections = Object.keys(cat).slice(0, 2).map(key => renderedSection(key, cat[key]));
   return (
-    <div>{sections}</div>
+    <Accordion activeIndex={0}>
+      {sections}
+    </Accordion>
   );
 };
 

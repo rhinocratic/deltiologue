@@ -9,6 +9,7 @@ import { searchLoader } from "./pages/search/searchLoader";
 import { detailsLoader } from "./pages/details/detailsLoader";
 import { noteCatalogueLoader } from "./pages/notes/noteCatalogueLoader";
 import { PrimeReactProvider } from 'primereact/api';
+import "primereact/resources/themes/md-light-deeppurple/theme.css";
 
 
 const router = createBrowserRouter([
