@@ -22,7 +22,6 @@
 (defn card-summary
   "Fetch all card summaries"
   [conn _req]
-  []
   (let [summaries (q/card-summary conn)]
     (with-status summaries)))
 
@@ -32,6 +31,19 @@
   (let [card-id (get-in req [:parameters :path :card-no])
         card (q/card conn card-id)]
     (with-status card)))
+
+(defn card-tags
+  [conn req]
+  "Fetch tags for a single card"
+  (let [card-id (get-in req [:parameters :path :card-no])
+        tags (q/card-tags conn card-id)]
+    (with-status tags)))
+
+(defn tags
+  [conn _req]
+  "Fetch all tags"
+  (let [tags (q/tags conn)]
+    (with-status tags)))
 
 (defn- map-by-initial
   [m {:keys [title] :as note}]
@@ -65,6 +77,12 @@
   (let [references (q/references conn)]
     {:status 200
      :body references}))
+
+(defn stamps
+  "Fetch all stamps"
+  [conn _req]
+  (let [stamps (q/stamps conn)]
+    (with-status stamps)))
 
 (defn search
   "Search for cards"

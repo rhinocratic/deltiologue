@@ -25,7 +25,38 @@
                           :p/subject-description)
                 (h/from [:postcard :p])
                 (sql/format))]
-    (jdbc/execute! conn sql {:builder-fn rs/as-unqualified-maps})))
+    (jdbc/execute! conn sql)))
+
+
+(defn card-tags
+  [conn card-id]
+  (let [sql (-> (h/select :t/display-text
+                          :t/tag-name
+                          :tc/display-text
+                          :tc/category-name)
+                (h/from [:postcard-tag :pt])
+                (h/left-join [:tag :t] [:= :pt.tag-id :t.id])
+                (h/left-join [:tag-category :tc] [:= :pt.tag-category-id :tc.id])
+                (h/where [:= :pt.postcard-id card-id])
+                (sql/format))]
+    (jdbc/execute! conn sql)))
+
+(defn card-stamps
+  [conn card-id]
+  (let [sql (-> (h/select :s/stamp-description
+                          :ps/stamp-condition)
+                (h/from [:postcard-stamp :ps])
+                (h/left-join [:stamp :s] [:= :ps.stamp-id :s.id])
+                (h/where [:= :ps.postcard-id card-id])
+                (sql/format))]
+    (jdbc/execute! conn sql)))
+
+(comment
+
+  (let [conn (:rhinocratic.deltiologue/db (user/system))]
+    (card-stamps conn 42))
+
+  #_())
 
 (defn card
   [conn card-id]
@@ -69,10 +100,15 @@
                 (h/left-join [:recipient :r] [:= :p.recipient :r.id])
                 (h/left-join [:series :s] [:= :p.series :s.id])
                 (h/where [:= :p/id card-id])
-                (sql/format))]
-    (-> (jdbc/execute-one! conn sql {:builder-fn rs/as-unqualified-maps})
-        (update :subject_location d/datafy)
-        (update :recipient_location d/datafy))))
+                (sql/format))
+        card-detail (-> (jdbc/execute-one! conn sql {:builder-fn rs/as-maps})
+                        (update :postcard/subject_location d/datafy)
+                        (update :recipient/recipient_location d/datafy))
+        tags (card-tags conn card-id)
+        stamps (card-stamps conn card-id)]
+    (-> (assoc card-detail
+               :tags tags
+               :stamps stamps))))
 
 (defn search
   [conn terms]
@@ -82,7 +118,7 @@
                 (h/from [:postcard :p] [[:to_tsquery terms] :ts])
                 (h/where [pgo/atat :p/fts :ts])
                 (sql/format))
-        results (jdbc/execute! conn sql {:builder-fn rs/as-unqualified-maps})]
+        results (jdbc/execute! conn sql)]
     {:results results
      :count (count results)}))
 
@@ -108,7 +144,7 @@
                 (h/join [:note-reference :nr] [:= :nr.reference-id :r.id])
                 (h/where [:= :nr/note-id note-id])
                 (sql/format))]
-    (jdbc/execute! conn sql {:builder-fn rs/as-unqualified-maps})))
+    (jdbc/execute! conn sql)))
 
 (defn note
   [conn note-id]
@@ -117,8 +153,16 @@
                 (h/from [:note :n])
                 (h/where [:= :n/id note-id])
                 (sql/format))
-        note (jdbc/execute-one! conn sql {:builder-fn rs/as-unqualified-maps})]
+        note (jdbc/execute-one! conn sql)]
     (merge note {:references (note-references conn note-id)})))
+
+(defn tags
+  [conn]
+  (let [sql (-> (h/select :t/tag-name
+                          :t/display-text)
+                (h/from [:tag :t])
+                (sql/format))]
+    (jdbc/execute! conn sql)))
 
 (defn references
   [conn]
