@@ -51,13 +51,6 @@
                 (sql/format))]
     (jdbc/execute! conn sql)))
 
-(comment
-
-  (let [conn (:rhinocratic.deltiologue/db (user/system))]
-    (card-stamps conn 42))
-
-  #_())
-
 (defn card
   [conn card-id]
   (let [sql (-> (h/select :p/collection-index
@@ -177,6 +170,21 @@
                 (h/from [:reference :r])
                 (sql/format))]
     (jdbc/execute! conn sql {:builder-fn rs/as-unqualified-maps})))
+
+(defn stamps
+  [conn]
+  (let [sql (-> (h/select :s/stamp-description)
+                (h/from [:stamp :s])
+                (sql/format))]
+    (jdbc/execute! conn sql)))
+
+(comment
+
+  (let [conn (:rhinocratic.deltiologue/db (user/system))]
+    (stamps conn))
+
+  #_())
+
 
 
 (comment
