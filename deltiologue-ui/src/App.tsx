@@ -5,12 +5,11 @@ import DetailsPage from "./pages/details/DetailsPage";
 import SearchPage from "./pages/search/SearchPage";
 import LinksPage from "./pages/links/LinksPage";
 import NotesPage from "./pages/notes/NotesPage";
+import NotFoundPage from "./pages/error/NotFoundPage";
 import { searchLoader } from "./pages/search/searchLoader";
 import { detailsLoader } from "./pages/details/detailsLoader";
 import { noteCatalogueLoader } from "./pages/notes/noteCatalogueLoader";
-import { PrimeReactProvider } from 'primereact/api';
 import "primereact/resources/themes/md-light-deeppurple/theme.css";
-
 
 const router = createBrowserRouter([
   {
@@ -19,6 +18,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        path: "/",
         element: <HomePage />,
       },
       {
@@ -40,15 +40,17 @@ const router = createBrowserRouter([
         path: "/links",
         element: <LinksPage />,
       },
+      {
+        path: "*",
+        element: <NotFoundPage />
+      }
     ],
   },
 ]);
 
 function App() {
   return (
-    <PrimeReactProvider>
-      <RouterProvider router={router} />
-    </PrimeReactProvider>
+    <RouterProvider router={router} />
   );
 }
 

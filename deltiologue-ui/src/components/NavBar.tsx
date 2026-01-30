@@ -16,20 +16,20 @@ export default function NavBar() {
       </div>
       <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
         <div className="text-sm lg:flex-grow">
-          <Link to="/" className="block mt-4 lg:inline-block lg:mt-0 text-stone-600  hover:text-red-900 mr-4">
+          <Link state={{ idx: 0 }} to="/" className="block mt-4 lg:inline-block lg:mt-0 text-stone-600  hover:text-red-900 mr-4">
             Home
           </Link>
-          <Link to="/notes" className="block mt-4 lg:inline-block lg:mt-0 text-stone-600 hover:text-red-900 mr-4">
+          <Link state={{ idx: 1 }} to="/notes" className="block mt-4 lg:inline-block lg:mt-0 text-stone-600 hover:text-red-900 mr-4">
             Notes
           </Link>
-          <Link to="/links" className="block mt-4 lg:inline-block lg:mt-0 text-stone-600  hover:text-red-900">
+          <Link state={{ idx: 2 }} to="/links" className="block mt-4 lg:inline-block lg:mt-0 text-stone-600  hover:text-red-900">
             Links
           </Link>
         </div>
 
         {/* <div>
-      <a href="#" className="inline-block text-sm px-4 py-2 leading-none border rounded text-black border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Download</a>
-    </div> */}
+          <a href="#" className="inline-block text-sm px-4 py-2 leading-none border rounded text-black border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Download</a>
+        </div> */}
         <div>
           <LoginBar />
           <SearchInput />

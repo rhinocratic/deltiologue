@@ -10,7 +10,5 @@ export async function getNoteCatalogue(): Promise<NoteCatalogue> {
 
   const data: NoteCatalogue = await result.json();
 
-  console.log(data);
-
   return data;
 }
