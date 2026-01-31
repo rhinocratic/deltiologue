@@ -2,7 +2,6 @@
   (:require
    [clojure.string :as string]
    [rhinocratic.deltiologue.db.queries.references :as q]
-   ;;  [rhinocratic.deltiologue.web.api.routes :as rts]
    [rhinocratic.deltiologue.web.api.handlers.util :as u]))
 
 (defn references
