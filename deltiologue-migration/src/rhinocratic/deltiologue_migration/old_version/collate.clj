@@ -64,8 +64,8 @@
 (defn card-tags
   [id card]
   (-> (select-keys card [:events :location :other-tags :transport :work :notable-buildings :misc])
-      (assoc :area-primary [(:area-primary card)])
-      (assoc :area-secondary [(:area-secondary card)])
+      (assoc :primary-area [(:primary-area card)])
+      (assoc :secondary-area [(:secondary-area card)])
       (update :misc #(concat % (:other-tags card)))
       (dissoc :other-tags)
       (->> (reduce-kv extract-fields []))
@@ -212,12 +212,12 @@
                                    (into {}))
         cat-display {:notable-buildings "Notable Buildings"
                      :location "Location"
-                     :area-primary "Primary Area"
+                     :primary-area "Primary Area"
                      :misc "Miscellaneous"
                      :transport "Transport"
                      :work "Work"
                      :events "Events"
-                     :area-secondary "Secondary Area"}
+                     :secondary-area "Secondary Area"}
         tag-categories (->> tag-category-keys
                             (mapv #(hash-map :category-name (string/replace (name %) "-" "_")
                                              :display-text (get cat-display %))))

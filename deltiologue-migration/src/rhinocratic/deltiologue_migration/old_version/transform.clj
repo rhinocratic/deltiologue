@@ -113,7 +113,7 @@
    Also deal with an anomalous entry."
   [area-str]
   (if (string/blank? area-str)
-    {:area-primary nil :area-secondary nil}
+    {:primary-area nil :secondary-area nil}
     (let [[_ weird] (re-matches #"[^;]+;\n(.*);" area-str)
           components (if weird
                        [(-> weird
@@ -125,7 +125,7 @@
                             (map string/trim)
                             (map string/capitalize)))
           components (concat (vec components) (repeat 2 nil))]
-      (zipmap [:area-primary :area-secondary] components))))
+      (zipmap [:primary-area :secondary-area] components))))
 
 (defn lower-includes?
   [s substring]

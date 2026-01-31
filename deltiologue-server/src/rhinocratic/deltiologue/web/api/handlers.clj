@@ -2,8 +2,9 @@
   (:require
    [clojure.string :as string]
    [reitit.core :as r]
+   [cheshire.core :as json]
    [rhinocratic.deltiologue.db.queries :as q]
-   [cheshire.core :as json]))
+   [rhinocratic.deltiologue.web.api.routes :as rts]))
 
 (defn error?
   [value]
@@ -18,6 +19,13 @@
      (error? item) (:error item)
      (nil? item) {:status 404}
      :else {:status status :body item})))
+
+(defn make-location
+  [req relative-path]
+  (let [{:keys [scheme server-name server-port]} req]
+    (->> relative-path
+         (format "%s://%s:%s%s" (name scheme) server-name server-port)
+         (hash-map "location"))))
 
 (defn card-summary
   "Fetch all card summaries"
@@ -44,6 +52,41 @@
   "Fetch all tags"
   (let [tags (q/tags conn)]
     (with-status tags)))
+
+(defn tag-categories
+  [conn _req]
+  "Fetch all tag categories"
+  (let [categories (q/tag-categories conn)]
+    (with-status categories)))
+
+(defn tag-category
+  [conn req]
+  "Fetch a single tag category"
+  (let [category-id (get-in req [:parameters :path :category-id])
+        category (q/tag-category conn category-id)]
+    (with-status category)))
+
+(defn new-tag-category
+  [conn req]
+  "Create a new tag category"
+  (let [category (get-in req [:body-params])
+        router (::r/router req)
+        saved-category (q/new-tag-category conn category)
+        id (:tag_category/id saved-category)
+        path (-> router
+                 (r/match-by-name ::rts/tag-category {:category-id id})
+                 :path)]
+    {:status 201
+     :body saved-category
+     :headers (make-location req path)}))
+
+(defn delete-tag-category
+  [conn req]
+  "Delete a tag category"
+  (let [category-id (get-in req [:parameters :path :category-id])
+        deleted (q/delete-tag-category conn category-id)]
+    {:status 200
+     :body deleted}))
 
 (defn- map-by-initial
   [m {:keys [title] :as note}]
@@ -87,7 +130,7 @@
 (defn search
   "Search for cards"
   [conn req]
-  (let [terms (get-in req [:parameters :path :q])
+  (let [terms (get-in req [:parameters :query :q])
         results (q/search conn terms)]
     (with-status results)))
 
@@ -97,6 +140,7 @@
   {:status 200
    :body {:name (:filename file)
           :size (:size file)}})
+
 
 (comment
 

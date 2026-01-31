@@ -157,6 +157,47 @@
                 (sql/format))]
     (jdbc/execute! conn sql)))
 
+(defn tag-categories
+  [conn]
+  (let [sql (-> (h/select :tc/id
+                          :tc/display-text
+                          :tc/category-name)
+                (h/from [:tag-category :tc])
+                (sql/format))]
+    (jdbc/execute! conn sql)))
+
+(defn tag-category
+  [conn category-id]
+  (let [sql (-> (h/select :tc/id
+                          :tc/display-text
+                          :tc/category-name)
+                (h/from [:tag-category :tc])
+                (h/where [:= :tc.id category-id])
+                (sql/format))]
+    (jdbc/execute-one! conn sql)))
+
+(defn new-tag-category
+  [conn category]
+  (let [category-name (-> category
+                          :display-text
+                          (str/trim)
+                          (str/lower-case)
+                          (str/replace #"\s+" "_"))
+        category (assoc category :category-name category-name)
+        sql (-> (h/insert-into :tag-category)
+                (h/values [category])
+                (h/returning :*)
+                (sql/format))]
+    (jdbc/execute-one! conn sql)))
+
+(defn delete-tag-category
+  [conn category-id]
+  (let [sql (-> (h/delete-from :tag-category)
+                (h/where [:= :id category-id])
+                (h/returning :*)
+                (sql/format))]
+    (jdbc/execute-one! conn sql)))
+
 (defn references
   [conn]
   (let [sql (-> (h/select :r/idx
@@ -181,7 +222,14 @@
 (comment
 
   (let [conn (:rhinocratic.deltiologue/db (user/system))]
-    (stamps conn))
+    (tag-category conn 1))
+
+  (let [conn (:rhinocratic.deltiologue/db (user/system))]
+    (new-tag-category conn {:display-text "A further attempt"}))
+
+  (let [conn (:rhinocratic.deltiologue/db (user/system))]
+    (delete-tag-category conn 9))
+
 
   #_())
 

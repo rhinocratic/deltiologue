@@ -16,11 +16,10 @@
     ["" {:name ::card-summary
          :get {:handler (partial #'h/card-summary conn)
                :summary "Fetch a summary of all cards"}}]
-    ["/:card-no" {:parameters {:path {:card-no int?}}}
-     ["/detail" {:name ::card-detail
-                 :parameters {:path {:card-no int?}}
-                 :get {:handler (partial #'h/card conn)}
-                 :summary "Fetch a card by number"}]]]
+    ["/:card-no" {:name ::card
+                  :parameters {:path {:card-no int?}}
+                  :get {:handler (partial #'h/card conn)}
+                  :summary "Fetch a card by number"}]]
    ["/notes" {:swagger {:tags ["notes"]}}
     ["" {:name ::note-summaries
          :get {:handler (partial #'h/note-summaries conn)
@@ -36,13 +35,35 @@
    ["/tags" {:swagger {:tags ["tags"]}}
     ["" {:name ::tags
          :get {:handler (partial #'h/tags conn)
-               :summary "Fetch all tags"}}]]
+               :summary "Fetch all tags"}}]
+    ["/categories"
+     ["" {:name ::tag-categories
+          :get {:handler (partial #'h/tag-categories conn)
+                :summary "Fetch all tag categories"}
+          :post {:handler (partial #'h/new-tag-category conn)
+                 :summary "Create a tag category"
+                 :parameters {:body {:display-text string?}}
+                 :responses {201 {:body {:tag_category/id int?
+                                         :tag_category/display_text string?
+                                         :tag_category/category_name string?}}}}}]
+     ["/:category-id" {:name ::tag-category
+                       :parameters {:path {:category-id int?}}
+                       :get {:handler (partial #'h/tag-category conn)
+                             :summary "Fetch a single tag category by ID"}
+                       :delete {:handler (partial #'h/delete-tag-category conn)
+                                :summary "Delete a single tag category by ID"}}]]]
    ["/stamps" {:swagger {:tags ["stamps"]}}
     ["" {:name ::stamps
          :get {:handler (partial #'h/stamps conn)
                :summary "Fetch all stamps"}}]]
    ["/search" {:swagger {:tags ["search"]}}
-    ["/:q" {:name ::search
-            :parameters {:path {:q string?}}
-            :get {:handler (partial #'h/search conn)}
-            :summary "Search for cards"}]]])
+    ["" {:name ::search
+         :parameters {:query {:q string?}}
+         :get {:handler (partial #'h/search conn)}
+         :summary "Search for cards"}]]])
+
+
+{:post {:summary "upload an image to a temporary location"
+        :parameters {:multipart {:file multipart/temp-file-part}}
+        :responses {200 {:body {:name string?, :size int?}}}
+        :handler #'h/upload-temp-image}}
