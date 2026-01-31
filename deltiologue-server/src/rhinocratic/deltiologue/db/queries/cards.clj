@@ -7,6 +7,7 @@
    [clojure.datafy :as dat]
    [clojure.core.protocols :as prot]))
 
+;; Extend the Datafiable protocol to the objects returned in Postgres' geospatial columns
 (extend-protocol prot/Datafiable
   net.postgis.jdbc.geometry.Point
   (datafy [p]
@@ -17,6 +18,7 @@
     (dat/datafy (.getGeometry g))))
 
 (defn- card-tags
+  "Fetch all tags associated with a card"
   [conn card-id]
   (let [sql (-> (h/select :t/display-text
                           :t/tag-name
@@ -30,6 +32,7 @@
     (jdbc/execute! conn sql)))
 
 (defn- card-stamps
+  "Fetch all stamps associated with a card"
   [conn card-id]
   (let [sql (-> (h/select :s/stamp-description
                           :ps/stamp-condition)
@@ -39,7 +42,8 @@
                 (sql/format))]
     (jdbc/execute! conn sql)))
 
-(defn card
+(defn get-card
+  "Fetch a card by ID"
   [conn card-id]
   (let [sql (-> (h/select :p/collection-index
                           :p/divided-back
@@ -90,3 +94,38 @@
     (-> (assoc card-detail
                :tags tags
                :stamps stamps))))
+
+(defn- new-card
+  "Create a new card"
+  [conn card]
+  (let [sql (-> (h/insert-into :note)
+                (h/values [card])
+                (h/returning :*)
+                (sql/format))]
+    (jdbc/execute-one! conn sql)))
+
+(defn- update-card
+  "Update an existing card"
+  [conn card]
+  (let [sql (-> (h/update [:postcard :p])
+                (h/set (dissoc card :id))
+                (h/where [:= :p/id (:id card)])
+                (h/returning :*)
+                (sql/format))]
+    (jdbc/execute-one! conn sql)))
+
+(defn save-card
+  "Save a card"
+  [conn card]
+  (if (:id card)
+    (update-card card)
+    (new-card card)))
+
+(defn delete-card
+  "Delete a card"
+  [conn card-id]
+  (let [sql (-> (h/delete-from :postcard)
+                (h/where [:= :id card-id])
+                (h/returning :*)
+                (sql/format))]
+    (jdbc/execute-one! conn sql)))

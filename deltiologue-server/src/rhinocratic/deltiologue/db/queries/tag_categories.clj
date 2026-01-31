@@ -5,7 +5,7 @@
    [honey.sql :as sql]
    [honey.sql.helpers :as h]))
 
-(defn tag-categories
+(defn all-tag-categories
   [conn]
   (let [sql (-> (h/select :tc/id
                           :tc/display-text
@@ -14,7 +14,7 @@
                 (sql/format))]
     (jdbc/execute! conn sql)))
 
-(defn tag-category
+(defn get-tag-category
   [conn category-id]
   (let [sql (-> (h/select :tc/id
                           :tc/display-text
@@ -65,10 +65,10 @@
 (comment
 
   (let [conn (:rhinocratic.deltiologue/db (user/system))]
-    (tag-category conn 1))
+    (get-tag-category conn 1))
 
   (let [conn (:rhinocratic.deltiologue/db (user/system))]
-    (save-tag-category conn {:display-text "A brand new one"}))
+    (save-tag-category conn {:display-text "Another brand new one"}))
 
   (let [conn (:rhinocratic.deltiologue/db (user/system))]
     (save-tag-category conn {:id 27 :display-text "Somewhat changed"}))

@@ -3,7 +3,6 @@
    [clojure.string :as string]
    [reitit.core :as r]
    [rhinocratic.deltiologue.db.queries.notes :as q]
-   ;;  [rhinocratic.deltiologue.web.api.routes :as rts]
    [rhinocratic.deltiologue.web.api.handlers.util :as u]))
 
 (defn- map-by-initial
@@ -18,17 +17,44 @@
        (sort-by :note/title)
        (reduce map-by-initial (sorted-map))))
 
-(defn note-summaries
+(defn all-note-summaries
   "Fetch summaries of all notes"
   [conn _req]
-  (let [summaries (q/note-summaries conn)
+  (let [summaries (q/all-note-summaries conn)
         sorted (sort-note-summaries summaries)]
-    (tap> sorted)
     {:status 200 :body sorted}))
 
-(defn note
+(defn get-note
   "Fetch a note by ID"
   [conn req]
   (let [note-id (get-in req [:parameters :path :note-id])
-        note (q/note conn note-id)]
+        note (q/get-note conn note-id)]
     {:status 200 :body note}))
+
+(defn new-note
+  "Create a new note"
+  [conn req]
+  (let [note (get-in req [:body-params])
+        saved-note (q/save-note conn note)
+        saved-note-id (:note/id saved-note)
+        route-name :rhinocratic.deltiologue.web.api.routes.notes/note
+        path-params {:note-id saved-note-id}]
+    {:status 201
+     :body saved-note
+     :headers (u/make-location req route-name path-params)}))
+
+(defn update-note
+  "Update an existing note"
+  [conn req]
+  (let [note (get-in req [:body-params])
+        saved-note (q/save-note conn note)]
+    {:status 200
+     :body saved-note}))
+
+(defn delete-note
+  "Delete a note"
+  [conn req]
+  (let [note-id (get-in req [:parameters :path :note-id])
+        deleted (q/delete-note conn note-id)]
+    {:status 200
+     :body deleted}))

@@ -5,10 +5,14 @@
 (defn routes
   [conn]
   ["/cards" {:swagger {:tags ["cards"]}}
-   #_["" {:name ::card-summary
-          :get {:handler (partial #'h/card-summaries conn)
-                :summary "Fetch a summary of all cards"}}]
-   ["/:card-no" {:name ::card
-                 :parameters {:path {:card-no int?}}
-                 :get {:handler (partial #'h/card conn)}
-                 :summary "Fetch a card by number"}]])
+   ["" {:name ::card-summary
+        :post {:handler (partial #'h/new-card conn)
+               :summary "Create a new card"}}]
+   ["/:card-id" {:name ::card
+                 :parameters {:path {:card-id int?}}
+                 :get {:handler (partial #'h/get-card conn)
+                       :summary "Fetch a card by ID"}
+                 :put {:handler (partial #'h/update-card conn)
+                       :summary "Update a card by ID"}
+                 :delete {:handler (partial #'h/delete-card conn)
+                          :summary "Delete a card"}}]])
