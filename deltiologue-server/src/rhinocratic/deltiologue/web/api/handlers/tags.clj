@@ -3,7 +3,6 @@
    [clojure.string :as string]
    [reitit.core :as r]
    [rhinocratic.deltiologue.db.queries.tags :as q]
-   ;;  [rhinocratic.deltiologue.web.api.routes :as rts]
    [rhinocratic.deltiologue.web.api.handlers.util :as u]))
 
 (defn all-tags
