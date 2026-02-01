@@ -20,11 +20,6 @@
                    ::display_text
                    ::colour]))
 
-(s/valid? ::tag-category {:id 1
-                          :category_name "the_name"
-                          :display_text "The display text"
-                          :colour "ffeebb"})
-
 (defn routes
   "Routes for tag-category related functionality"
   [conn]
@@ -46,6 +41,7 @@
                                            :default {:body {:error string?}}}}
                          :put {:handler (partial #'h/update-tag-category conn)
                                :summary "Update a tag category"
+                               :parameters {:body ::tag-category}
                                :responses {200 {:body ::tag-category}
                                            :default {:body {:error string?}}}}
                          :delete {:handler (partial #'h/delete-tag-category conn)
