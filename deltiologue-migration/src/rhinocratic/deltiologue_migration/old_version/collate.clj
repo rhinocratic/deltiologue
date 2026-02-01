@@ -2,7 +2,8 @@
   "Aggregate the information from individual spreadsheet rows into separate maps for each table, creating foreign key links where needed"
   (:require
    [clojure.set :as set]
-   [clojure.string :as string]))
+   [clojure.string :as string]
+   [rhinocratic.deltiologue-migration.old-version.content :as content]))
 
 (defn rename-fields
   [rename-ks rows]
@@ -249,6 +250,11 @@
   [_rows m _table]
   m)
 
+(defn slideshow
+  []
+  (let [slideshow-ids [2 14 15 16 17 19 22 24 28 36 37 50 51 54 55 56 57 66 84 96 97 100 102 128 130 131 132 138 142 144 146 159 162 163 164 173 178 179 181 183 190 191 207 210 218 221 223 225 229 230 232 238 243 246 247 249 252 253 260 262 263 277 278 279 285 286 288 290 291 294 303 307 310 311 318 327 332 333 335 337 339 340 341 349 352 353 358 360 362 368 372 376 384 385 389 391 395 400 401 410 413 417 422 430 438 439 441 444 445 446 455 457 459 460 461 465 466 468 479 480 482 485 494 495 496 497 504 512 522 531 534 537 541 545 545 546 547 550 551 553 554 555 558 568 569 571 575 576 577 578 579 580 581 582 583 584 585 586 588 589 591 592 598 610 615 618 626 628 629 641 642 643 645 646 648 651 652 653 654 656]]
+    (mapv #(hash-map :postcard-id %) slideshow-ids)))
+
 (defn collate
   [{:keys [card] :as data}]
   (let [card-tables [:postcard
@@ -258,8 +264,9 @@
                      :stamp
                      :tag]
         collated-cards (reduce (partial collate-table card) {} card-tables)]
-    (->> (assoc collated-cards :slideshow [{:postcard-id 42}
-                                           {:postcard-id 455}])
+    (->> collated-cards
+         (assoc :slideshow (slideshow))
+         (assoc :content (content/parse))
          (merge (dissoc data :card)))))
 
 (comment

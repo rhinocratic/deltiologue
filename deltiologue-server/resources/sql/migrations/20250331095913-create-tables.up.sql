@@ -1,3 +1,10 @@
+create table if not exists content (
+    id int generated always as identity (minvalue 0 start with 0 increment by 1),
+    title text not null,
+    content text not null,
+    primary key (id)
+);
+--;;
 create table if not exists publisher (
     id int generated always as identity (minvalue 0 start with 0 increment by 1),
     publisher_name text not null,

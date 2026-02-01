@@ -15,72 +15,75 @@
 (dt/read-as-instant)
 
 (def table-cols
-  {:tag-category       [:category-name
-                        :display-text
-                        :colour]
-   :tag                [:tag-name
-                        :display-text]
-   :stamp              [:stamp-description]
-   :publisher          [:publisher-name]
-   :recipient          [:recipient-name
-                        :recipient-address
-                        :recipient-location]
-   :series             [:series-name]
-   :image              [:url
-                        :title
-                        :alt-text]
-   :note-image         [:filename
-                        :caption
-                        :alt-text]
-   :postcard           [:collection-index
-                        :divided-back
-                        :rp
-                        :used
-                        :posted
-                        :franked
-                        :image-front
-                        :image-front-alt
-                        :image-rear
-                        :image-rear-alt
-                        :image-thumb
-                        :publication-year
-                        :publication-month
-                        :publication-day
-                        :publication-date
-                        :publication-date-approximate
-                        :posted-year
-                        :posted-month
-                        :posted-day
-                        :posted-date
-                        :posted-date-approximate
-                        :subject-description
-                        :subject-location
-                        :subject-current-view
-                        :notes
-                        :transcript
-                        :publisher
-                        :recipient
-                        :series
-                        :series-entry]
-   :postcard-tag       [:postcard-id
-                        :tag-id
-                        :tag-category-id]
-   :postcard-stamp     [:postcard-id
-                        :stamp-id
-                        :stamp-condition]
-   :slideshow          [:postcard-id]
-   :note               [:title
-                        :body]
-   :reference          [:idx
-                        :medium
-                        :accessed
-                        :source
-                        :title
-                        :issue-date
-                        :issue-note
-                        :available]
-   :note-reference     [:note-id
-                        :reference-id]})
+  {:tag-category   [:category-name
+                    :display-text
+                    :colour]
+   :tag            [:tag-name
+                    :display-text]
+   :stamp          [:stamp-description]
+   :publisher      [:publisher-name]
+   :recipient      [:recipient-name
+                    :recipient-address
+                    :recipient-location]
+   :series         [:series-name]
+   :image          [:url
+                    :title
+                    :alt-text]
+   :note-image     [:filename
+                    :caption
+                    :alt-text]
+   :postcard       [:collection-index
+                    :divided-back
+                    :rp
+                    :used
+                    :posted
+                    :franked
+                    :image-front
+                    :image-front-alt
+                    :image-rear
+                    :image-rear-alt
+                    :image-thumb
+                    :publication-year
+                    :publication-month
+                    :publication-day
+                    :publication-date
+                    :publication-date-approximate
+                    :posted-year
+                    :posted-month
+                    :posted-day
+                    :posted-date
+                    :posted-date-approximate
+                    :subject-description
+                    :subject-location
+                    :subject-current-view
+                    :notes
+                    :transcript
+                    :publisher
+                    :recipient
+                    :series
+                    :series-entry]
+   :postcard-tag   [:postcard-id
+                    :tag-id
+                    :tag-category-id]
+   :postcard-stamp [:postcard-id
+                    :stamp-id
+                    :stamp-condition]
+   :slideshow      [:postcard-id]
+   :note           [:title
+                    :body]
+   :reference      [:idx
+                    :medium
+                    :accessed
+                    :source
+                    :title
+                    :issue-date
+                    :issue-note
+                    :available]
+   :note-reference [:note-id
+                    :reference-id]
+   :about          [:title
+                    :content
+                    :order]})
 
 (defn insert-statements
   [table cols collated]

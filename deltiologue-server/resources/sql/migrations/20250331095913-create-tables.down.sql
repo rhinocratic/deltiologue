@@ -69,4 +69,6 @@ drop table if exists tag_category;
 --;;
 drop table if exists publisher;
 --;;
+drop table if exists content;
+--;;
 drop type if exists stamp_condition;
