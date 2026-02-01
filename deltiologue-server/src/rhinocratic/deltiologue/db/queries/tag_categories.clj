@@ -2,27 +2,32 @@
   (:require
    [clojure.string :as string]
    [next.jdbc :as jdbc]
+   [next.jdbc.result-set :as rs]
    [honey.sql :as sql]
    [honey.sql.helpers :as h]))
+
+(def opts {:builder-fn rs/as-unqualified-maps})
 
 (defn all-tag-categories
   [conn]
   (let [sql (-> (h/select :tc/id
                           :tc/display-text
-                          :tc/category-name)
+                          :tc/category-name
+                          :tc/colour)
                 (h/from [:tag-category :tc])
                 (sql/format))]
-    (jdbc/execute! conn sql)))
+    (jdbc/execute! conn sql opts)))
 
 (defn get-tag-category
   [conn category-id]
   (let [sql (-> (h/select :tc/id
                           :tc/display-text
-                          :tc/category-name)
+                          :tc/category-name
+                          :tc/colour)
                 (h/from [:tag-category :tc])
                 (h/where [:= :tc.id category-id])
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (defn- new-tag-category
   [conn category]
@@ -30,7 +35,7 @@
                 (h/values [category])
                 (h/returning :*)
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (defn- update-tag-category
   [conn category]
@@ -39,7 +44,7 @@
                 (h/where [:= :tc/id (:id category)])
                 (h/returning :*)
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (defn save-tag-category
   [conn category]
@@ -59,7 +64,7 @@
                 (h/where [:= :id category-id])
                 (h/returning :*)
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 
 (comment

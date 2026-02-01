@@ -16,7 +16,9 @@
   [conn req]
   (let [category-id (get-in req [:parameters :path :tag-category-id])
         category (q/get-tag-category conn category-id)]
-    {:status 200 :body category}))
+    (if category
+      {:status 200 :body category}
+      {:status 404})))
 
 (defn new-tag-category
   "Create a new tag category"
