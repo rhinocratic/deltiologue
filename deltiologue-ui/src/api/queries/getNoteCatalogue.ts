@@ -5,7 +5,7 @@ export async function getNoteCatalogue(): Promise<NoteCatalogue> {
   const baseUrl = import.meta.env.VITE_POSTCARD_API_BASE_URL;
 
   const result = await fetch(
-    `${baseUrl}/note`
+    `${baseUrl}/notes`
   );
 
   const data: NoteCatalogue = await result.json();
