@@ -73,6 +73,8 @@ drop table if exists tag_category;
 --;;
 drop table if exists publisher;
 --;;
+drop trigger if exists content_moddatetime on content;
+--;;
 drop table if exists content;
 --;;
 drop type if exists stamp_condition;

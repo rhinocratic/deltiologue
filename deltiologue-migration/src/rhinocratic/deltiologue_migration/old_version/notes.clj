@@ -200,7 +200,8 @@
                   (map markdown-para)
                   (string/join "\n\n"))]
     {:title title
-     :body body}))
+     :body body
+     :draft false}))
 
 (defn parse-body
   [^XWPFDocument doc]

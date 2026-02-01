@@ -3,10 +3,18 @@ create extension moddatetime;
 --;;
 create table if not exists content (
     id int generated always as identity (minvalue 0 start with 0 increment by 1),
+    draft boolean not null default true,
     title text not null,
     content text not null,
+    created_at timestamp not null default current_timestamp,
+    updated_at timestamp not null default current_timestamp,
     primary key (id)
 );
+--;;
+create trigger content_moddatetime
+	before update on content
+	for each row
+	execute procedure moddatetime (updated_at);
 --;;
 create table if not exists publisher (
     id int generated always as identity (minvalue 0 start with 0 increment by 1),
@@ -79,6 +87,7 @@ create table if not exists note_image (
 --;;
 create table if not exists postcard (
     id int generated always as identity (minvalue 0 start with 0 increment by 1),
+    draft boolean not null default true,
     collection_index int not null,
     divided_back boolean not null,
     rp boolean not null,
@@ -173,6 +182,7 @@ create index idx_postcard_tag_tag_category on postcard_tag(tag_category_id);
 --;;
 create table if not exists note (
     id int generated always as identity (minvalue 0 start with 0 increment by 1),
+    draft boolean not null default true,
     title text,
     body text,
     created_at timestamp not null default current_timestamp,

@@ -144,39 +144,40 @@
 
 (defmethod collate-table :postcard
   [rows m _table]
-  (merge m {:postcard (project [:collection-index
-                                :divided-back
-                                :rp
-                                :used
-                                :posted
-                                :franked
-                                :image-front
-                                :image-front-alt
-                                :image-rear
-                                :image-rear-alt
-                                :image-thumb
-                                :publication-year
-                                :publication-month
-                                :publication-day
-                                :publication-date
-                                :publication-date-approximate
-                                :posted-year
-                                :posted-month
-                                :posted-day
-                                :posted-date
-                                :posted-date-approximate
-                                :location-description
-                                :subject-description
-                                :subject-location
-                                :subject-current-view
-                                :notes
-                                :transcript
-                                :publisher
-                                :recipient
-                                :series
-                                :publisher-name
-                                :recipient-name
-                                :series-name] rows)}))
+  (merge m {:postcard (->> rows (project [:collection-index
+                                          :divided-back
+                                          :rp
+                                          :used
+                                          :posted
+                                          :franked
+                                          :image-front
+                                          :image-front-alt
+                                          :image-rear
+                                          :image-rear-alt
+                                          :image-thumb
+                                          :publication-year
+                                          :publication-month
+                                          :publication-day
+                                          :publication-date
+                                          :publication-date-approximate
+                                          :posted-year
+                                          :posted-month
+                                          :posted-day
+                                          :posted-date
+                                          :posted-date-approximate
+                                          :location-description
+                                          :subject-description
+                                          :subject-location
+                                          :subject-current-view
+                                          :notes
+                                          :transcript
+                                          :publisher
+                                          :recipient
+                                          :series
+                                          :publisher-name
+                                          :recipient-name
+                                          :series-name])
+                           (map #(assoc % :draft false)))}))
 
 (defmethod collate-table :series
   [rows m _table]

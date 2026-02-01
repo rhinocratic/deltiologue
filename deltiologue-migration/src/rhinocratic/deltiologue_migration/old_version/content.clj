@@ -23,8 +23,11 @@
 (defn parse
   []
   [{:title "About"
-    :content (home-content)}
+    :content (home-content)
+    :draft false}
    {:title "Links"
-    :content (links-content)}
+    :content (links-content)
+    :draft false}
    {:title "Technical"
-    :content (technical-content)}])
+    :content (technical-content)
+    :draft false}])

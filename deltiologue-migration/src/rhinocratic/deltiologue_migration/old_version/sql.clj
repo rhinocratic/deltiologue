@@ -32,7 +32,8 @@
    :note-image     [:filename
                     :caption
                     :alt-text]
-   :postcard       [:collection-index
+   :postcard       [:draft
+                    :collection-index
                     :divided-back
                     :rp
                     :used
@@ -69,7 +70,8 @@
                     :stamp-id
                     :stamp-condition]
    :slideshow      [:postcard-id]
-   :note           [:title
+   :note           [:draft
+                    :title
                     :body]
    :reference      [:idx
                     :medium
@@ -83,7 +85,7 @@
                     :reference-id]
    :content        [:title
                     :content
-                    :order]})
+                    :draft]})
 
 (defn insert-statements
   [table cols collated]
