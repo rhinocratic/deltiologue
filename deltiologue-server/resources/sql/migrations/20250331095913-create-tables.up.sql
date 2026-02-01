@@ -9,8 +9,10 @@ create table if not exists tag_category (
     id int generated always as identity (minvalue 0 start with 0 increment by 1),
     category_name text not null,
     display_text text not null,
+    colour text not null,
     primary key(id),
-    unique(category_name)
+    unique(category_name),
+    constraint rgb_colour check (colour ~* '^[a-f0-9]{6}$')
 );
 --;;
 create index idx_tag_category_category_name on tag_category(category_name);
@@ -188,17 +190,4 @@ create table if not exists note_reference (
 create index idx_note_reference_note on note_reference(note_id);
 --;;
 create index idx_note_reference_reference on note_reference(reference_id);
---;;
---;;
-create or replace function card_tags(card_id int)
-returns table (tag_name text, display_text text, tag_category text)
-as
-$$
-select t.tag_name, t.display_text, c.display_text
-from postcard_tag pt
-left join tag t on pt.tag_id = t.id
-left join tag_category c on pt.tag_category_id = c.id
-where pt.postcard_id = card_id;
-$$
-language 'sql' stable parallel safe;
 --;;

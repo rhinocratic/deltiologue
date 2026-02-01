@@ -1,6 +1,4 @@
 --;;
-drop function if exists card_tags(int);
---;;
 drop index if exists idx_note_reference_reference;
 --;;
 drop index if exists idx_note_reference_note;

@@ -218,9 +218,18 @@
                      :work "Work"
                      :events "Events"
                      :secondary-area "Secondary Area"}
+        cat-colours {:notable-buildings "eeeeff"
+                     :location "eeffee"
+                     :primary-area "ffeeee"
+                     :misc "eeeeee"
+                     :transport "ffeeff"
+                     :work "ddddff"
+                     :events "ddffff"
+                     :secondary-area "ddffee"}
         tag-categories (->> tag-category-keys
                             (mapv #(hash-map :category-name (string/replace (name %) "-" "_")
-                                             :display-text (get cat-display %))))
+                                             :display-text (get cat-display %)
+                                             :colour (get cat-colours %))))
         postcard-tags (->> merged
                            (map-indexed (fn [id [[category tag] {:keys [cards tag-text]}]]
                                           (map

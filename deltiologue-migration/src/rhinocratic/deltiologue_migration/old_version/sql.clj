@@ -16,7 +16,8 @@
 
 (def table-cols
   {:tag-category       [:category-name
-                        :display-text]
+                        :display-text
+                        :colour]
    :tag                [:tag-name
                         :display-text]
    :stamp              [:stamp-description]
