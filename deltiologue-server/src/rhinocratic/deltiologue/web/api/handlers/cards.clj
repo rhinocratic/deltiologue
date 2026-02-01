@@ -9,7 +9,7 @@
   "Fetch a card by ID"
   [conn req]
   (let [card-id (get-in req [:parameters :path :card-id])
-        card (q/card conn card-id)]
+        card (q/get-card conn card-id)]
     {:status 200 :body card}))
 
 (defn new-card

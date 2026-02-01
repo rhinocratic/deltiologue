@@ -5,7 +5,7 @@
 (defn routes
   [conn]
   ["/references" {:swagger {:tags ["references"]}}
-   ["" {:name ::references
+   ["" {:name ::reference-list
         :get {:handler (partial #'h/references conn)
               :summary "Fetch all references"}
         :post {:handler (partial #'h/new-reference conn)

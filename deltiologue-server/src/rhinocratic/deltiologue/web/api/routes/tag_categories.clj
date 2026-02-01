@@ -6,7 +6,7 @@
   "Routes for tag-category related functionality"
   [conn]
   ["/tag-categories" {:swagger {:tags ["tag categories"]}}
-   ["" {:name ::tag-categories
+   ["" {:name ::tag-category-list
         :get {:handler (partial #'h/all-tag-categories conn)
               :summary "Fetch all tag categories"}
         :post {:handler (partial #'h/new-tag-category conn)

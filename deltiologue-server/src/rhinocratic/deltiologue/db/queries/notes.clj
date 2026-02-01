@@ -6,6 +6,7 @@
    [honey.sql.helpers :as h]))
 
 (defn all-note-summaries
+  "Fetch all note summaries"
   [conn]
   (let [sql (-> (h/select :n/id
                           :n/title)
@@ -14,6 +15,7 @@
     (jdbc/execute! conn sql)))
 
 (defn note-references
+  "Fetch all references associated with a note"
   [conn note-id]
   (let [sql (-> (h/select :r/idx
                           :r/medium
@@ -30,6 +32,7 @@
     (jdbc/execute! conn sql)))
 
 (defn get-note
+  "Fetch a note by ID"
   [conn note-id]
   (let [sql (-> (h/select :n/title
                           :n/body)
@@ -40,6 +43,7 @@
     (merge note {:references (note-references conn note-id)})))
 
 (defn new-note
+  "Create a new note"
   [conn note]
   (let [sql (-> (h/insert-into :note)
                 (h/values [note])
@@ -48,6 +52,7 @@
     (jdbc/execute-one! conn sql)))
 
 (defn update-note
+  "Update a note"
   [conn note]
   (let [sql (-> (h/update [:note :n])
                 (h/set (dissoc note :id))
@@ -64,6 +69,7 @@
     (new-note note)))
 
 (defn delete-note
+  "Delete a note"
   [conn note-id]
   (let [sql (-> (h/delete-from :note)
                 (h/where [:= :id note-id])

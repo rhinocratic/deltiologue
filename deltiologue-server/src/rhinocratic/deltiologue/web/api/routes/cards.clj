@@ -5,7 +5,7 @@
 (defn routes
   [conn]
   ["/cards" {:swagger {:tags ["cards"]}}
-   ["" {:name ::card-summary
+   ["" {:name ::card-list
         :post {:handler (partial #'h/new-card conn)
                :summary "Create a new card"}}]
    ["/:card-id" {:name ::card

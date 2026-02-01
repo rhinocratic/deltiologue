@@ -5,7 +5,7 @@
 (defn routes
   [conn]
   ["/stamps" {:swagger {:tags ["stamps"]}}
-   ["" {:name ::stamps
+   ["" {:name ::stamp-list
         :get {:handler (partial #'h/all-stamps conn)
               :summary "Fetch all stamps"}
         :post {:handler (partial #'h/new-stamp conn)

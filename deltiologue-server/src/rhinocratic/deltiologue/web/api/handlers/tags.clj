@@ -8,7 +8,7 @@
 (defn all-tags
   "Fetch all tags"
   [conn _req]
-  (let [tags (q/tags conn)]
+  (let [tags (q/all-tags conn)]
     {:status 200 :body tags}))
 
 (defn new-tag

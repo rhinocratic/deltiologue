@@ -8,7 +8,7 @@
 (defn all-stamps
   "Fetch all stamps"
   [conn _req]
-  (let [stamps (q/stamps conn)]
+  (let [stamps (q/all-stamps conn)]
     {:status 200 :body stamps}))
 
 (defn get-stamp

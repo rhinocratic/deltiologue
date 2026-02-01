@@ -8,6 +8,9 @@
    [rhinocratic.deltiologue.web.api.routes.tags :as tags]
    [rhinocratic.deltiologue.web.api.routes.tag-categories :as tag-categories]
    [rhinocratic.deltiologue.web.api.routes.stamps :as stamps]
+   [rhinocratic.deltiologue.web.api.routes.publishers :as publishers]
+   [rhinocratic.deltiologue.web.api.routes.recipients :as recipients]
+   [rhinocratic.deltiologue.web.api.routes.series :as series]
    [rhinocratic.deltiologue.web.api.routes.search :as search]))
 
 (defn routes
@@ -19,4 +22,7 @@
    (tags/routes conn)
    (tag-categories/routes conn)
    (stamps/routes conn)
+   (publishers/routes conn)
+   (recipients/routes conn)
+   (series/routes conn)
    (search/routes conn)])
