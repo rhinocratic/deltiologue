@@ -5,7 +5,7 @@
 
 (defn colour?
   [s]
-  (re-matches #"^[a-f0-9]{6}$" s))
+  (re-matches #"^[A-Fa-f0-9]{6}$" s))
 
 (s/def ::id int?)
 (s/def ::display_text string?)
@@ -21,7 +21,6 @@
                    ::colour]))
 
 (defn routes
-  "Routes for tag-category related functionality"
   [conn]
   ["/tag-categories" {:swagger {:tags ["tag categories"]}}
    ["" {:name ::tag-category-list
