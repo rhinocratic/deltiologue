@@ -13,15 +13,15 @@
     (backends/jws backend-opts)))
 
 (defn make-token-auth-middleware
-  "Return a middleware for use on routes requiring token authentication."
+  "Return a middleware for routes requiring token authentication."
   ([]
    (make-token-auth-middleware default-backend))
   ([backend]
    (fn [handler]
      (buddy-auth-middleware/wrap-authentication handler backend))))
 
-(defn require-auth
-  "Middleware used in routes that require authentication. If the request is
+(defn- require-auth
+  "Middleware for routes that require authentication. If the request is
   not authenticated a 401 response will be returned."
   [handler]
   (fn [request]
@@ -31,14 +31,16 @@
        :body {:error "Unauthorized"
               :req (str request)}})))
 
-(defn require-edit-permission
-  "Middleware used on routes requiring edit permission."
+(defn- require-edit-permission
+  "Middleware for routes requiring edit permission."
   [handler]
   (fn [request]
     (if (-> request :identity :permissions set (contains? "edit"))
       (handler request)
       {:status 403 :body {:error "Edit permission required" :req (:identity request)}})))
 
-(def admin-middleware (comp (make-token-auth-middleware)
-                            require-auth
-                            require-edit-permission))
+(def admin-middleware
+  "Middleware for routes requiring authentication and edit permission"
+  (comp (make-token-auth-middleware)
+        require-auth
+        require-edit-permission))
