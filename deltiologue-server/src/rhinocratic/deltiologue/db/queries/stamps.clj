@@ -2,25 +2,30 @@
   (:require
    [clojure.string :as string]
    [next.jdbc :as jdbc]
+   [next.jdbc.result-set :as rs]
    [honey.sql :as sql]
    [honey.sql.helpers :as h]))
+
+(def opts {:builder-fn rs/as-unqualified-maps})
 
 (defn all-stamps
   "Fetch all stamps"
   [conn]
-  (let [sql (-> (h/select :s/stamp-description)
+  (let [sql (-> (h/select :s/id
+                          :s/stamp-description)
                 (h/from [:stamp :s])
                 (sql/format))]
-    (jdbc/execute! conn sql)))
+    (jdbc/execute! conn sql opts)))
 
 (defn get-stamp
   "Fetch a stamp by ID"
   [conn stamp-id]
-  (let [sql (-> (h/select :s/stamp-description)
+  (let [sql (-> (h/select :s/id
+                          :s/stamp-description)
                 (h/from [:stamp :s])
                 (h/where [:= :s/id stamp-id])
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (defn- new-stamp
   "Create a new stamp"
@@ -29,7 +34,7 @@
                 (h/values [stamp])
                 (h/returning :*)
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (defn- update-stamp
   "Update an existing stamp"
@@ -39,7 +44,7 @@
                 (h/where [:= :s/id (:id stamp)])
                 (h/returning :*)
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (defn save-stamp
   "Save a stamp"
@@ -55,7 +60,7 @@
                 (h/where [:= :id stamp-id])
                 (h/returning :*)
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (comment
 

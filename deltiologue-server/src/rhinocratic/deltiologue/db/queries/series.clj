@@ -2,8 +2,11 @@
   (:require
    [clojure.string :as string]
    [next.jdbc :as jdbc]
+   [next.jdbc.result-set :as rs]
    [honey.sql :as sql]
    [honey.sql.helpers :as h]))
+
+(def opts {:builder-fn rs/as-unqualified-maps})
 
 (defn all-series
   "Fetch all series"
@@ -12,7 +15,7 @@
                           :s/series-name)
                 (h/from [:series :s])
                 (sql/format))]
-    (jdbc/execute! conn sql)))
+    (jdbc/execute! conn sql opts)))
 
 (defn get-series
   "Fetch a series by ID"
@@ -22,7 +25,7 @@
                 (h/from [:series :s])
                 (h/where [:= :s/id series-id])
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (defn new-series
   "Create a new series"
@@ -31,7 +34,7 @@
                 (h/values [series])
                 (h/returning :*)
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (defn update-series
   "Update an existing series"
@@ -41,7 +44,7 @@
                 (h/where [:= :r/id (:id series)])
                 (h/returning :*)
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (defn save-series
   "Save a series"
@@ -57,4 +60,4 @@
                 (h/where [:= :id series-id])
                 (h/returning :*)
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))

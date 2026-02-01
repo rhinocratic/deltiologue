@@ -2,21 +2,23 @@
   (:require
    [clojure.string :as string]
    [next.jdbc :as jdbc]
+   [next.jdbc.result-set :as rs]
    [honey.sql :as sql]
    [honey.sql.helpers :as h]
    [honey.sql.pg-ops :as pgo]))
 
+(def opts {:builder-fn rs/as-unqualified-maps})
+
 (defn search
   [conn terms]
-  (let [sql (-> (h/select :p/collection-index
+  (let [sql (-> (h/select :p/id
+                          :p/collection-index
                           :p/subject-description
                           :p/image-thumb)
                 (h/from [:postcard :p] [[:to_tsquery terms] :ts])
                 (h/where [pgo/atat :p/fts :ts])
-                (sql/format))
-        results (jdbc/execute! conn sql)]
-    {:results results
-     :count (count results)}))
+                (sql/format))]
+    (jdbc/execute! conn sql opts)))
 
 
 (comment
@@ -28,7 +30,7 @@
                 (h/from [:postcard :p] [[:to_tsquery "sail"] :ts])
                 (h/where [pgo/atat :p/fts :ts])
                 (sql/format))]
-    (-> (jdbc/execute! conn sql)))
+    (-> (jdbc/execute! conn sql opts)))
 
   #_())
 

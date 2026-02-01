@@ -81,7 +81,7 @@
                     :available]
    :note-reference [:note-id
                     :reference-id]
-   :about          [:title
+   :content        [:title
                     :content
                     :order]})
 
@@ -108,7 +108,8 @@
    :postcard
    :postcard-tag
    :postcard-stamp
-   :slideshow])
+   :slideshow
+   :content])
 
 (defn truncate-tables
   [connection]

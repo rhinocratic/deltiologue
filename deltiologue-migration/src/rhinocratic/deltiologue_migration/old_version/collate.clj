@@ -264,10 +264,10 @@
                      :stamp
                      :tag]
         collated-cards (reduce (partial collate-table card) {} card-tables)]
-    (->> collated-cards
-         (assoc :slideshow (slideshow))
-         (assoc :content (content/parse))
-         (merge (dissoc data :card)))))
+    (-> collated-cards
+        (assoc :slideshow (slideshow))
+        (assoc :content (content/parse))
+        (#(merge (dissoc data :card) %)))))
 
 (comment
 

@@ -2,8 +2,11 @@
   (:require
    [clojure.string :as string]
    [next.jdbc :as jdbc]
+   [next.jdbc.result-set :as rs]
    [honey.sql :as sql]
    [honey.sql.helpers :as h]))
+
+(def opts {:builder-fn rs/as-unqualified-maps})
 
 (defn all-recipients
   "Fetch all recipients"
@@ -14,7 +17,7 @@
                           :r/recipient-location)
                 (h/from [:recipient :r])
                 (sql/format))]
-    (jdbc/execute! conn sql)))
+    (jdbc/execute! conn sql opts)))
 
 (defn get-recipient
   "Fetch a recipient by ID"
@@ -26,7 +29,7 @@
                 (h/from [:recipient :r])
                 (h/where [:= :r/id recipient-id])
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (defn new-recipient
   "Create a new recipient"
@@ -35,7 +38,7 @@
                 (h/values [recipient])
                 (h/returning :*)
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (defn update-recipient
   "Update an existing recipient"
@@ -45,7 +48,7 @@
                 (h/where [:= :r/id (:id recipient)])
                 (h/returning :*)
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (defn save-recipient
   "Save a recipient"
@@ -61,4 +64,4 @@
                 (h/where [:= :id recipient-id])
                 (h/returning :*)
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))

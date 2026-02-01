@@ -2,8 +2,11 @@
   (:require
    [clojure.string :as string]
    [next.jdbc :as jdbc]
+   [next.jdbc.result-set :as rs]
    [honey.sql :as sql]
    [honey.sql.helpers :as h]))
+
+(def opts {:builder-fn rs/as-unqualified-maps})
 
 (defn all-publishers
   "Fetch all publishers"
@@ -12,7 +15,7 @@
                           :p/publisher-name)
                 (h/from [:publisher :p])
                 (sql/format))]
-    (jdbc/execute! conn sql)))
+    (jdbc/execute! conn sql opts)))
 
 (defn get-publisher
   "Fetch a publisher by ID"
@@ -22,7 +25,7 @@
                 (h/from [:publisher :p])
                 (h/where [:= :p/id publisher-id])
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (defn- new-publisher
   "Create a new publisher"
@@ -31,7 +34,7 @@
                 (h/values [publisher])
                 (h/returning :*)
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (defn- update-publisher
   "Update an existing publisher"
@@ -41,7 +44,7 @@
                 (h/where [:= :n/id (:id publisher)])
                 (h/returning :*)
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (defn save-publisher
   "Save a publisher"
@@ -57,5 +60,5 @@
                 (h/where [:= :id publisher-id])
                 (h/returning :*)
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 

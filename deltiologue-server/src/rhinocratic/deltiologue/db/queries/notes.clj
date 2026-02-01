@@ -20,7 +20,8 @@
 (defn note-references
   "Fetch all references associated with a note"
   [conn note-id]
-  (let [sql (-> (h/select :r/idx
+  (let [sql (-> (h/select :r/id
+                          :r/idx
                           :r/medium
                           :r/accessed
                           :r/source
@@ -37,7 +38,8 @@
 (defn get-note
   "Fetch a note by ID"
   [conn note-id]
-  (let [sql (-> (h/select :n/title
+  (let [sql (-> (h/select :n/id
+                          :n/title
                           :n/body)
                 (h/from [:note :n])
                 (h/where [:= :n/id note-id])

@@ -19,13 +19,16 @@
                    ::category_name
                    ::display_text
                    ::colour]))
+(s/def ::tag-category-list
+  (s/coll-of ::tag-category :into []))
 
 (defn routes
   [conn]
   ["/tag-categories" {:swagger {:tags ["tag categories"]}}
    ["" {:name ::tag-category-list
         :get {:summary "Fetch all tag categories"
-              :handler (partial #'h/all-tag-categories conn)}
+              :handler (partial #'h/all-tag-categories conn)
+              :responses {200 {:body ::tag-category-list}}}
         :post {:summary "Create a tag category"
                :handler (partial #'h/new-tag-category conn)
                :parameters {:body ::new-tag-category}

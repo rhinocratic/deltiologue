@@ -11,6 +11,7 @@
    [rhinocratic.deltiologue.web.api.routes.publishers :as publishers]
    [rhinocratic.deltiologue.web.api.routes.recipients :as recipients]
    [rhinocratic.deltiologue.web.api.routes.series :as series]
+   [rhinocratic.deltiologue.web.api.routes.content :as content]
    [rhinocratic.deltiologue.web.api.routes.search :as search]))
 
 (defn routes
@@ -25,4 +26,5 @@
    (publishers/routes conn)
    (recipients/routes conn)
    (series/routes conn)
+   (content/routes conn)
    (search/routes conn)])

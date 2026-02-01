@@ -8,5 +8,5 @@
   ["/images" {:swagger {:tags ["images"]}}
    ["/upload" {:post {:summary "upload an image to a temporary location"
                       :parameters {:multipart {:file multipart/temp-file-part}}
-                      :responses {200 {:body {:name string?, :size int?}}}
+                      :responses {201 {:body {:name string?, :size int?}}}
                       :handler #'h/upload-temp-image}}]])

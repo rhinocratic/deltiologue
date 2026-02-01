@@ -2,8 +2,11 @@
   (:require
    [clojure.string :as string]
    [next.jdbc :as jdbc]
+   [next.jdbc.result-set :as rs]
    [honey.sql :as sql]
    [honey.sql.helpers :as h]))
+
+(def opts {:builder-fn rs/as-unqualified-maps})
 
 (defn all-references
   "Fetch all references"
@@ -19,7 +22,7 @@
                           :r/available)
                 (h/from [:reference :r])
                 (sql/format))]
-    (jdbc/execute! conn sql)))
+    (jdbc/execute! conn sql opts)))
 
 (defn- new-reference
   "Create a new reference"
@@ -28,7 +31,7 @@
                 (h/values [reference])
                 (h/returning :*)
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (defn get-reference
   "Fetch a reference by ID"
@@ -45,7 +48,7 @@
                 (h/from [:reference :r])
                 (h/where [:= :r.id reference-id])
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (defn- update-reference
   "Update an existing reference"
@@ -55,7 +58,7 @@
                 (h/where [:= :r/id (:id reference)])
                 (h/returning :*)
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (defn save-reference
   "Save a reference"
@@ -71,7 +74,7 @@
                 (h/where [:= :id reference-id])
                 (h/returning :*)
                 (sql/format))]
-    (jdbc/execute-one! conn sql)))
+    (jdbc/execute-one! conn sql opts)))
 
 (comment
 
