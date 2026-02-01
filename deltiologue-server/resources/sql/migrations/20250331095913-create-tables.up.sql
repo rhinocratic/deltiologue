@@ -1,3 +1,6 @@
+--;;
+create extension moddatetime;
+--;;
 create table if not exists content (
     id int generated always as identity (minvalue 0 start with 0 increment by 1),
     title text not null,
@@ -113,7 +116,7 @@ create table if not exists postcard (
     constraint fk_postcard_image_front foreign key(image_front) references image(id) on delete cascade,
     constraint fk_postcard_image_rear foreign key(image_rear) references image(id) on delete cascade,
     constraint fk_postcard_image_thumb foreign key(image_thumb) references image(id) on delete cascade,
-    constraint fk_postcard_publsher foreign key(publisher) references publisher(id) on delete cascade,
+    constraint fk_postcard_publisher foreign key(publisher) references publisher(id) on delete cascade,
     constraint fk_postcard_recipient foreign key(recipient) references recipient(id) on delete cascade,
     constraint fk_postcard_series foreign key(series) references series(id) on delete cascade
 );
@@ -126,6 +129,11 @@ generated always as
 create index idx_postcard_fts_gin on postcard using gin (fts);
 --;;
 create index idx_postcard_location on postcard using gist (geography(subject_location));
+--;;
+create trigger postcard_moddatetime
+	before update on postcard
+	for each row
+	execute procedure moddatetime (updated_at);
 --;;
 create table if not exists slideshow (
     id int generated always as identity (minvalue 0 start with 0 increment by 1),
@@ -167,8 +175,15 @@ create table if not exists note (
     id int generated always as identity (minvalue 0 start with 0 increment by 1),
     title text,
     body text,
+    created_at timestamp not null default current_timestamp,
+    updated_at timestamp not null default current_timestamp,
     primary key(id)
 );
+--;;
+create trigger note_moddatetime
+	before update on note
+	for each row
+	execute procedure moddatetime (updated_at);
 --;;
 create table if not exists reference (
     id int generated always as identity (minvalue 0 start with 0 increment by 1),
