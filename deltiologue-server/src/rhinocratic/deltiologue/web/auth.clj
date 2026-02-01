@@ -15,7 +15,7 @@
 (defn make-token-auth-middleware
   "Return a middleware for use on routes requiring token authentication."
   ([]
-   (make-auth-middleware default-backend))
+   (make-token-auth-middleware default-backend))
   ([backend]
    (fn [handler]
      (buddy-auth-middleware/wrap-authentication handler backend))))
