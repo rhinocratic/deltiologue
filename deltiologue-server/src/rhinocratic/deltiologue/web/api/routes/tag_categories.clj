@@ -42,8 +42,10 @@
                                :summary "Update a tag category"
                                :parameters {:body ::tag-category}
                                :responses {200 {:body ::tag-category}
+                                           404 {:body nil}
                                            :default {:body {:error string?}}}}
                          :delete {:handler (partial #'h/delete-tag-category conn)
                                   :summary "Delete a tag category"
                                   :responses {200 {:body ::tag-category}
+                                              404 {:body nil}
                                               :default {:body {:error string?}}}}}]])
