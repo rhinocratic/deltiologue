@@ -6,16 +6,16 @@
   [conn]
   ["/publishers" {:swagger {:tags ["publishers"]}}
    ["" {:name ::publisher-list
-        :get {:handler (partial #'h/all-publishers conn)
-              :summary "Fetch all publishers"}
-        :post {:handler (partial #'h/new-publisher conn)
-               :summary "Create a new publisher"}}]
+        :get {:summary "Fetch all publishers"
+              :handler (partial #'h/all-publishers conn)}
+        :post {:summary "Create a new publisher"
+               :handler (partial #'h/new-publisher conn)}}]
    ["/:publisher-id"
     ["" {:name ::publisher
          :parameters {:path {:publisher-id int?}}
-         :get {:handler (partial #'h/get-publisher conn)
-               :summary "Fetch a publisher by ID"}
-         :put {:handler (partial #'h/update-publisher conn)
-               :summary "Update an existing publisher"}
-         :delete {:handler (partial #'h/delete-publisher conn)
-                  :summary "Delete a publisher"}}]]])
+         :get {:summary "Fetch a publisher by ID"
+               :handler (partial #'h/get-publisher conn)}
+         :put {:summary "Update an existing publisher"
+               :handler (partial #'h/update-publisher conn)}
+         :delete {:summary "Delete a publisher"
+                  :handler (partial #'h/delete-publisher conn)}}]]])

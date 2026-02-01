@@ -6,15 +6,15 @@
   [conn]
   ["/references" {:swagger {:tags ["references"]}}
    ["" {:name ::reference-list
-        :get {:handler (partial #'h/references conn)
-              :summary "Fetch all references"}
-        :post {:handler (partial #'h/new-reference conn)
-               :summary "Create a new reference"}}]
+        :get {:summary "Fetch all references"
+              :handler (partial #'h/references conn)}
+        :post {:summary "Create a new reference"
+               :handler (partial #'h/new-reference conn)}}]
    ["/:reference-id" {:name ::reference
                       :parameters {:path {:reference-id int?}}
-                      :get {:handler (partial #'h/get-reference conn)
-                            :summary "Fetch a reference by ID"}
-                      :put {:handler (partial #'h/update-reference conn)
-                            :summary "Update an existing reference"}
-                      :delete {:handler (partial #'h/delete-reference conn)
-                               :summary "Delete a reference"}}]])
+                      :get {:summary "Fetch a reference by ID"
+                            :handler (partial #'h/get-reference conn)}
+                      :put {:summary "Update an existing reference"
+                            :handler (partial #'h/update-reference conn)}
+                      :delete {:summary "Delete a reference"
+                               :handler (partial #'h/delete-reference conn)}}]])

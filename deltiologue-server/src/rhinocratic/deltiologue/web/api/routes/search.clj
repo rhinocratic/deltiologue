@@ -7,5 +7,5 @@
   ["/search" {:swagger {:tags ["search"]}}
    ["" {:name ::search
         :parameters {:query {:q string?}}
-        :get {:handler (partial #'h/search conn)}
-        :summary "Search for cards"}]])
+        :get {:summary "Search for cards"
+              :handler (partial #'h/search conn)}}]])

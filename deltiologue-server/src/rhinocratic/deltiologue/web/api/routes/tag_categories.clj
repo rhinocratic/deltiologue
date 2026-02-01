@@ -24,28 +24,21 @@
   [conn]
   ["/tag-categories" {:swagger {:tags ["tag categories"]}}
    ["" {:name ::tag-category-list
-        :get {:handler (partial #'h/all-tag-categories conn)
-              :summary "Fetch all tag categories"}
-        :post {:handler (partial #'h/new-tag-category conn)
-               :summary "Create a tag category"
+        :get {:summary "Fetch all tag categories"
+              :handler (partial #'h/all-tag-categories conn)}
+        :post {:summary "Create a tag category"
+               :handler (partial #'h/new-tag-category conn)
                :parameters {:body ::new-tag-category}
-               :responses {201 {:body ::tag-category}
-                           :default {:body {:error string?}}}}}]
+               :responses {201 {:body ::tag-category}}}}]
    ["/:tag-category-id" {:name ::tag-category
                          :parameters {:path {:tag-category-id int?}}
-                         :get {:handler (partial #'h/get-tag-category conn)
-                               :summary "Fetch a tag category by ID"
-                               :responses {200 {:body ::tag-category}
-                                           404 {:body nil}
-                                           :default {:body {:error string?}}}}
-                         :put {:handler (partial #'h/update-tag-category conn)
-                               :summary "Update a tag category"
+                         :get {:summary "Fetch a tag category by ID"
+                               :handler (partial #'h/get-tag-category conn)
+                               :responses {200 {:body ::tag-category}}}
+                         :put {:summary "Update a tag category"
+                               :handler (partial #'h/update-tag-category conn)
                                :parameters {:body ::tag-category}
-                               :responses {200 {:body ::tag-category}
-                                           404 {:body nil}
-                                           :default {:body {:error string?}}}}
-                         :delete {:handler (partial #'h/delete-tag-category conn)
-                                  :summary "Delete a tag category"
-                                  :responses {200 {:body ::tag-category}
-                                              404 {:body nil}
-                                              :default {:body {:error string?}}}}}]])
+                               :responses {200 {:body ::tag-category}}}
+                         :delete {:summary "Delete a tag category"
+                                  :handler (partial #'h/delete-tag-category conn)
+                                  :responses {200 {:body ::tag-category}}}}]])

@@ -6,15 +6,15 @@
   [conn]
   ["/tags" {:swagger {:tags ["tags"]}}
    ["" {:name ::tag-list
-        :get {:handler (partial #'h/all-tags conn)
-              :summary "Fetch all tags"}
-        :post {:handler (partial #'h/new-tag conn)
-               :summary "Create a new tag"}}]
+        :get {:summary "Fetch all tags"
+              :handler (partial #'h/all-tags conn)}
+        :post {:summary "Create a new tag"
+               :handler (partial #'h/new-tag conn)}}]
    ["/:tag-id" {:name ::tag
                 :parameters {:path {:tag-id int?}}
-                :get {:handler (partial #'h/get-tag conn)
-                      :summary "Fetch a tag by ID"}
-                :put {:handler (partial #'h/update-tag conn)
-                      :summary "Update an existing tag"}
-                :delete {:handler (partial #'h/delete-tag conn)
-                         :summary "Delete a tag"}}]])
+                :get {:summary "Fetch a tag by ID"
+                      :handler (partial #'h/get-tag conn)}
+                :put {:summary "Update an existing tag"
+                      :handler (partial #'h/update-tag conn)}
+                :delete {:summary "Delete a tag"
+                         :handler (partial #'h/delete-tag conn)}}]])

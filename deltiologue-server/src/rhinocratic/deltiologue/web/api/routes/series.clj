@@ -6,16 +6,16 @@
   [conn]
   ["/series" {:swagger {:tags ["series"]}}
    ["" {:name ::series-list
-        :get {:handler (partial #'h/all-series conn)
-              :summary "Fetch all series"}
-        :post {:handler (partial #'h/new-series conn)
-               :summary "Create a new series"}}]
+        :get {:summary "Fetch all series"
+              :handler (partial #'h/all-series conn)}
+        :post {:summary "Create a new series"
+               :handler (partial #'h/new-series conn)}}]
    ["/:series-id"
     ["" {:name ::series
          :parameters {:path {:series-id int?}}
-         :get {:handler (partial #'h/get-series conn)
-               :summary "Fetch a series by ID"}
-         :put {:handler (partial #'h/update-series conn)
-               :summary "Update an existing series"}
-         :delete {:handler (partial #'h/delete-series conn)
-                  :summary "Delete a series"}}]]])
+         :get {:summary "Fetch a series by ID"
+               :handler (partial #'h/get-series conn)}
+         :put {:summary "Update an existing series"
+               :handler (partial #'h/update-series conn)}
+         :delete {:summary "Delete a series"
+                  :handler (partial #'h/delete-series conn)}}]]])

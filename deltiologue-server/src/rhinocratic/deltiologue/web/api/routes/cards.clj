@@ -6,13 +6,13 @@
   [conn]
   ["/cards" {:swagger {:tags ["cards"]}}
    ["" {:name ::card-list
-        :post {:handler (partial #'h/new-card conn)
-               :summary "Create a new card"}}]
+        :post {:summary "Create a new card"
+               :handler (partial #'h/new-card conn)}}]
    ["/:card-id" {:name ::card
                  :parameters {:path {:card-id int?}}
-                 :get {:handler (partial #'h/get-card conn)
-                       :summary "Fetch a card by ID"}
-                 :put {:handler (partial #'h/update-card conn)
-                       :summary "Update a card by ID"}
-                 :delete {:handler (partial #'h/delete-card conn)
-                          :summary "Delete a card"}}]])
+                 :get {:summary "Fetch a card by ID"
+                       :handler (partial #'h/get-card conn)}
+                 :put {:summary "Update a card by ID"
+                       :handler (partial #'h/update-card conn)}
+                 :delete {:summary "Delete a card"
+                          :handler (partial #'h/delete-card conn)}}]])

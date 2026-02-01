@@ -6,16 +6,16 @@
   [conn]
   ["/notes" {:swagger {:tags ["notes"]}}
    ["" {:name ::note-summaries
-        :get {:handler (partial #'h/all-note-summaries conn)
-              :summary "Fetch summaries of all notes"}
-        :post {:handler (partial #'h/new-note conn)
-               :summary "Create a new note"}}]
+        :get {:summary "Fetch summaries of all notes"
+              :handler (partial #'h/all-note-summaries conn)}
+        :post {:summary "Create a new note"
+               :handler (partial #'h/new-note conn)}}]
    ["/:note-id"
     ["" {:name ::note
          :parameters {:path {:note-id int?}}
-         :get {:handler (partial #'h/get-note conn)
-               :summary "Fetch a note by ID"}
-         :put {:handler (partial #'h/update-note conn)
-               :summary "Update an existing note"}
-         :delete {:handler (partial #'h/delete-note conn)
-                  :summary "Delete a note"}}]]])
+         :get {:summary "Fetch a note by ID"
+               :handler (partial #'h/get-note conn)}
+         :put {:summary "Update an existing note"
+               :handler (partial #'h/update-note conn)}
+         :delete {:summary "Delete a note"
+                  :handler (partial #'h/delete-note conn)}}]]])

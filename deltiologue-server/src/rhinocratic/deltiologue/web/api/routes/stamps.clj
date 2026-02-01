@@ -6,15 +6,15 @@
   [conn]
   ["/stamps" {:swagger {:tags ["stamps"]}}
    ["" {:name ::stamp-list
-        :get {:handler (partial #'h/all-stamps conn)
-              :summary "Fetch all stamps"}
-        :post {:handler (partial #'h/new-stamp conn)
-               :summary "Create a new stamp"}}]
+        :get {:summary "Fetch all stamps"
+              :handler (partial #'h/all-stamps conn)}
+        :post {:summary "Create a new stamp"
+               :handler (partial #'h/new-stamp conn)}}]
    ["/:stamp-id" {:name ::stamp
                   :parameters {:path {:stamp-id int?}}
-                  :get {:handler (partial #'h/get-stamp conn)
-                        :summary "Fetch a stamp by ID"}
-                  :put {:handler (partial #'h/update-stamp conn)
-                        :summary "Update an existing stamp"}
-                  :delete {:handler (partial #'h/delete-stamp conn)
-                           :summary "Delete a stamp"}}]])
+                  :get {:summary "Fetch a stamp by ID"
+                        :handler (partial #'h/get-stamp conn)}
+                  :put {:summary "Update an existing stamp"
+                        :handler (partial #'h/update-stamp conn)}
+                  :delete {:summary "Delete a stamp"
+                           :handler (partial #'h/delete-stamp conn)}}]])
