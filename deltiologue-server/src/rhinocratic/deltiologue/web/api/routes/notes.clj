@@ -9,8 +9,12 @@
 (s/def ::note-summary
   (s/keys :req-un [::id
                    ::title]))
-(s/def ::note-summary-list
+(s/def ::note-summary-section-key string?)
+(s/def ::note-summary-section-items
   (s/coll-of ::note-summary :into []))
+(s/def ::note-summary-index
+  (s/map-of ::note-summary-section-key
+            ::note-summary-section-items))
 (s/def ::new-note
   (s/keys :req-un [::title
                    ::body]))
@@ -25,7 +29,7 @@
    ["" {:name ::note-summaries
         :get {:summary "Fetch summaries of all notes"
               :handler (partial #'h/all-note-summaries conn)
-              :responses {200 {:body ::note-summary-list}}}
+              :responses {200 {:body ::note-summary-index}}}
         :post {:summary "Create a new note"
                :handler (partial #'h/new-note conn)
                :parameters {:body ::new-note}
