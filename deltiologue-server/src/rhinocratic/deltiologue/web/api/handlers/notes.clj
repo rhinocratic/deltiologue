@@ -6,7 +6,7 @@
    [rhinocratic.deltiologue.web.api.handlers.util :as u]))
 
 (defn- map-by-initial
-  [m {:keys [:note/title] :as note}]
+  [m {:keys [:title] :as note}]
   (let [initial (str (first title))
         k (if (re-matches #"[0-9]" initial) "0-9" initial)]
     (update m k #((fnil conj []) %1 %2) note)))
@@ -14,7 +14,7 @@
 (defn- sort-note-summaries
   [summaries]
   (->> summaries
-       (sort-by :note/title)
+       (sort-by :title)
        (reduce map-by-initial (sorted-map))))
 
 (defn all-note-summaries
