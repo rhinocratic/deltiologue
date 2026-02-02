@@ -3,7 +3,6 @@ import Root from "./pages/Root";
 import HomePage from "./pages/home/HomePage";
 import DetailsPage from "./pages/details/DetailsPage";
 import SearchPage from "./pages/search/SearchPage";
-import LinksPage from "./pages/links/LinksPage";
 import NotesPage from "./pages/notes/NotesPage";
 import NotFoundPage from "./pages/error/NotFoundPage";
 import { searchLoader } from "./pages/search/searchLoader";
@@ -12,6 +11,8 @@ import { noteCatalogueLoader } from "./pages/notes/noteCatalogueLoader";
 import "primereact/resources/themes/md-light-deeppurple/theme.css";
 import AboutPage from "./pages/about/AboutPage";
 import { aboutLoader } from "./pages/about/aboutLoader";
+import CataloguePage from "./pages/catalogue/CataloguePage";
+import { catalogueLoader } from "./pages/catalogue/catalogueLoader";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,11 @@ const router = createBrowserRouter([
         index: true,
         path: "/",
         element: <HomePage />,
+      },
+      {
+        path: "/catalogue",
+        element: <CataloguePage />,
+        loader: catalogueLoader
       },
       {
         path: "/details/:index",
@@ -37,10 +43,6 @@ const router = createBrowserRouter([
         path: "/notes",
         element: <NotesPage />,
         loader: noteCatalogueLoader
-      },
-      {
-        path: "/links",
-        element: <LinksPage />,
       },
       {
         path: "/about",

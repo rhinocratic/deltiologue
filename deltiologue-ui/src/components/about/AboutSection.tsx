@@ -1,9 +1,9 @@
-interface ContentSectionProps {
+interface AboutSectionProps {
   title: string;
   content: string;
 }
 
-export default function AboutSection({ title, content }: ContentSectionProps) {
+export default function AboutSection({ title, content }: AboutSectionProps) {
   return (
     <div>
       <div>{title}</div>

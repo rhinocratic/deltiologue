@@ -5,6 +5,12 @@
    [rhinocratic.deltiologue.db.queries.cards :as q]
    [rhinocratic.deltiologue.web.api.handlers.util :as u]))
 
+(defn all-card-summaries
+  "Fetch all card summaries"
+  [conn req]
+  (let [summaries (q/all-card-summaries conn)]
+    {:status 200 :body summaries}))
+
 (defn get-card
   "Fetch a card by ID"
   [conn req]
