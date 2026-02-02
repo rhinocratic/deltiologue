@@ -92,6 +92,7 @@
                    ::thumb]))
 
 ;; Recipient
+(s/def ::name string?)
 (s/def ::address string?)
 (s/def ::recipient
   (s/nilable
@@ -170,8 +171,8 @@
               :responses {200 {:body ::card-summary-list}}}
         :post {:summary "Create a new card"
                :handler (partial #'h/new-card conn)
-               #_#_:parameters {:body ::new-card}
-               #_#_:responses {201 {:body ::card}}}}]
+               :parameters {:body ::new-card}
+               :responses {201 {:body ::card}}}}]
    ["/:card-id" {:name ::card
                  :parameters {:path {:card-id int?}}
                  :get {:summary "Fetch a card by ID"
@@ -179,8 +180,8 @@
                        :responses {200 {:body ::card}}}
                  :put {:summary "Update a card by ID"
                        :handler (partial #'h/update-card conn)
-                       #_#_:parameters {:body ::card}
-                       #_#_:responses {200 {:body ::card}}}
+                       :parameters {:body ::card}
+                       :responses {200 {:body ::card}}}
                  :delete {:summary "Delete a card"
                           :handler (partial #'h/delete-card conn)
-                          #_#_:responses {200 {:body ::card}}}}]])
+                          :responses {200 {:body ::card}}}}]])
