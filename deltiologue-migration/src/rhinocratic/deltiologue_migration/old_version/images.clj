@@ -23,32 +23,15 @@
   (let [rgx #"(\d+)[^(]+\(([^\)]+)\)"
         fname (.getName file)
         [_ idx face] (re-find rgx fname)]
-    {:front (str "/images/postcards/" (dec idx) "/front.jpg")
-     :rear (str "/images/postcards/" (dec idx) "/rear.jpg")
-     :thumb (str "/images/postcards/" (dec idx) "/thumb.jpg")}))
+    {:front (str "/images/postcards/" idx "/front.jpg")
+     :rear (str "/images/postcards/" idx "/rear.jpg")
+     :thumb (str "/images/postcards/" idx "/thumb.jpg")}))
 
 (defn image-index
   [fname]
   (->> fname
        (re-find #"^\d+")
        parse-long))
-
-;; (defn image-rows
-;;   [idx fname]
-;;   [{:title fname :alt-text "" :url (str "/images/postcards/" idx "/front.jpg")}
-;;    {:title fname :alt-text "" :url (str "/images/postcards/" idx "/rear.jpg")}
-;;    {:title fname :alt-text "" :url (str "/images/postcards/" idx "/thumb.jpg")}])
-
-;; (defn image-table
-;;   []
-;;   (->> (source-image-files)
-;;        (sort-by image-index)
-;;        (take-nth 2)
-;;        (map #(string/replace % #"\.jp(e?)g" ""))
-;;        (map #(string/replace % #"\s+\([^\)]+\)$" ""))
-;;        (map #(string/replace % #"^\d+\s+" ""))
-;;        (map-indexed image-rows)
-;;        (apply concat)))
 
 (defn front?
   [fname]
@@ -63,7 +46,6 @@
   (let [idx (->> src-fname
                  (re-find #"^\d+")
                  parse-long
-                 dec
                  str)
         src-file (io/as-file (str postcard-image-source-folder src-fname))
         dest-file (cond
@@ -83,7 +65,6 @@
   (let [idx (->> fname
                  (re-find #"^\d+")
                  parse-long
-                 dec
                  str)
         source-path (->> postcard-image-source-folder
                          io/as-file
