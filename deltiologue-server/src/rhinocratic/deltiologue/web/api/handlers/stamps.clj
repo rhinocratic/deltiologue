@@ -16,7 +16,9 @@
   [conn req]
   (let [stamp-id (get-in req [:parameters :path :stamp-id])
         stamp (q/get-stamp conn stamp-id)]
-    {:status 200 :body stamp}))
+    (if stamp
+      {:status 200 :body stamp}
+      {:status 404})))
 
 (defn new-stamp
   "Create a new stamp"

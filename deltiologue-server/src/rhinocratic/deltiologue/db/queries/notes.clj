@@ -46,7 +46,8 @@
                 (h/where [:= :n/id note-id])
                 (sql/format))
         note (jdbc/execute-one! conn sql opts)]
-    (merge note {:references (note-references conn note-id)})))
+    (when note
+      (merge note {:references (note-references conn note-id)}))))
 
 (defn new-note
   "Create a new note"

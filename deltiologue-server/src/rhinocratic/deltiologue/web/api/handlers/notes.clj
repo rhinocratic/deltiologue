@@ -29,7 +29,10 @@
   [conn req]
   (let [note-id (get-in req [:parameters :path :note-id])
         note (q/get-note conn note-id)]
-    {:status 200 :body note}))
+    (tap> note)
+    (if note
+      {:status 200 :body note}
+      {:status 404})))
 
 (defn new-note
   "Create a new note"

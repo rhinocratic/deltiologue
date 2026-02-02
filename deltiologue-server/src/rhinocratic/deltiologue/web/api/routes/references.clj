@@ -5,7 +5,7 @@
 
 (s/def ::id int?)
 (s/def ::index int?)
-(s/def ::authors string?)
+(s/def ::authors (s/nilable string?))
 (s/def ::medium (s/nilable string?))
 (s/def ::accessed (s/nilable inst?))
 (s/def ::source (s/nilable string?))

@@ -16,7 +16,9 @@
   [conn req]
   (let [card-id (get-in req [:parameters :path :card-id])
         card (q/get-card conn card-id)]
-    {:status 200 :body card}))
+    (if card
+      {:status 200 :body card}
+      {:status 404})))
 
 (defn new-card
   "Create a new card"

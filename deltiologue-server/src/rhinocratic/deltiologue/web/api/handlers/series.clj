@@ -16,7 +16,9 @@
   [conn req]
   (let [series-id (get-in req [:parameters :path :series-id])
         series (q/get-series conn series-id)]
-    {:status 200 :body series}))
+    (if series
+      {:status 200 :body series}
+      {:status 404})))
 
 (defn new-series
   "Create a new series"

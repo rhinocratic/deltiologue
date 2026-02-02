@@ -28,7 +28,9 @@
   [conn req]
   (let [reference-id (get-in req [:parameters :path :reference-id])
         reference (q/get-reference conn reference-id)]
-    {:status 200 :body reference}))
+    (if reference
+      {:status 200 :body reference}
+      {:status 404})))
 
 (defn update-reference
   "Update an existing reference"

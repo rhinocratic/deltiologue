@@ -16,7 +16,9 @@
   [conn req]
   (let [content-id (get-in req [:parameters :path :content-id])
         content (q/get-content conn content-id)]
-    {:status 200 :body content}))
+    (if content
+      {:status 200 :body content}
+      {:status 404})))
 
 (defn update-content
   "Update an existing content item"

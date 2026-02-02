@@ -28,7 +28,9 @@
   [conn req]
   (let [tag-id (get-in req [:parameters :path :tag-id])
         tag (q/get-tag conn tag-id)]
-    {:status 200 :body tag}))
+    (if tag
+      {:status 200 :body tag}
+      {:status 404})))
 
 (defn update-tag
   "Update an existing tag"

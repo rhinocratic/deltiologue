@@ -16,7 +16,9 @@
   [conn req]
   (let [publisher-id (get-in req [:parameters :path :publisher-id])
         publisher (q/get-publisher conn publisher-id)]
-    {:status 200 :body publisher}))
+    (if publisher
+      {:status 200 :body publisher}
+      {:status 404})))
 
 (defn new-publisher
   "Create a new publisher"

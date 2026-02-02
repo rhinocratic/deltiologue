@@ -43,18 +43,13 @@
                    ::current_view]))
 
 ;; Publisher
-(s/def ::name string?)
-(s/def ::publisher
-  (s/keys :req-un [::id
-                   ::name]))
+(s/def ::publisher_id (s/nilable int?))
 
 ;; Series
-(s/def ::name string?)
-(s/def ::entry (s/nilable string?))
-(s/def ::series
-  (s/keys :req-un [::id
-                   ::name
-                   ::entry]))
+(s/def ::series_id (s/nilable int?))
+
+;; Publication
+(s/def ::publication_description (s/nilable string?))
 
 ;; Stamps
 (defn condition?
@@ -69,13 +64,15 @@
   (s/coll-of ::stamp :into []))
 
 ;; Flags
+(s/def ::draft boolean?)
 (s/def ::rp boolean?)
 (s/def ::used boolean?)
 (s/def ::posted boolean?)
 (s/def ::franked boolean?)
 (s/def ::divided_back boolean?)
 (s/def ::flags
-  (s/keys :req-un [::rp
+  (s/keys :req-un [::draft
+                   ::rp
                    ::used
                    ::posted
                    ::franked
@@ -98,10 +95,28 @@
 (s/def ::address string?)
 (s/def ::recipient
   (s/nilable
-   (s/keys :req-un [::id
-                    ::name
+   (s/keys :req-un [::name
                     ::address
                     ::location])))
+
+;; Dates
+(s/def ::year (s/nilable int?))
+(s/def ::month (s/nilable int?))
+(s/def ::day (s/nilable int?))
+(s/def ::date (s/nilable inst?))
+(s/def ::approximate boolean?)
+(s/def ::publication_date
+  (s/keys :req-un [::year
+                   ::month
+                   ::day
+                   ::date
+                   ::approximate]))
+(s/def ::posted_date
+  (s/keys :req-un [::year
+                   ::month
+                   ::day
+                   ::date
+                   ::approximate]))
 
 ;; The card
 (s/def ::id int?)
@@ -112,24 +127,30 @@
                    ::index
                    ::images
                    ::subject
-                   ::publisher
+                   ::publisher_id
                    ::recipient
-                   ::series
+                   ::series_id
                    ::stamps
                    ::flags
                    ::tags
-                   ::notes]))
+                   ::notes
+                   ::publication_description
+                   ::posted_date
+                   ::publication_date]))
 (s/def ::new-card
   (s/keys :req-un [::index
                    ::images
                    ::subject
-                   ::publisher
+                   ::publisher_id
                    ::recipient
-                   ::series
+                   ::series_id
                    ::stamps
                    ::flags
                    ::tags
-                   ::notes]))
+                   ::notes
+                   ::publication_description
+                   ::posted_date
+                   ::publication_date]))
 
 ;; Summary
 (s/def ::card-summary

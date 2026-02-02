@@ -25,18 +25,17 @@
   "Rearrange the content of a card summary"
   [summary]
   (-> summary
-      (set/rename-keys {:collection_index :index
-                        :subject_description :description
-                        :image_thumb :image})
-      (#(update % :image (fn [idx {:keys [description]}] {:id idx :alt description}) %))))
+      (set/rename-keys {:subject_description :description})
+      (#(update % :image (fn [idx {:keys [index description]}]
+                           {:id index
+                            :alt description}) %))))
 
 (defn all-card-summaries
   "Fetch all card summaries"
   [conn]
   (let [sql (-> (h/select :p/id
                           :p/index
-                          :p/subject-description
-                          :p/image-thumb)
+                          :p/subject-description)
                 (h/from [:postcard :p])
                 (sql/format))]
     (->> (jdbc/execute! conn sql opts)
@@ -83,7 +82,6 @@
   "Reorganize the card details into a hierarchical structure"
   [card]
   (-> card
-      (assoc :index (:collection_index card))
       (assoc :posted_date {:year (:posted_year card)
                            :month (:posted_month card)
                            :day (:posted_day card)
@@ -94,23 +92,18 @@
                                 :day (:publication_day card)
                                 :date (:publication_date card)
                                 :approximate (:publication_date_approximate card)})
-      (assoc :recipient (when (some? (:recipient card))
-                          {:id (:recipient card)
-                           :name (:recipient_name card)
+      (assoc :recipient (when (some? (:recipient_name card))
+                          {:name (:recipient_name card)
                            :address (:recipient_address card)
                            :location (:recipient_location card)}))
-      (assoc :publisher {:id (:publisher card)
-                         :name (:publisher_name card)})
-      (assoc :series {:id (:series card)
-                      :name (:series_name card)
-                      :entry (:series_entry card)})
-      (assoc :images {:front {:id (:image_index card)
+      (assoc :images {:front {:id (:index card)
                               :alt (:image_front_alt card)}
-                      :rear {:id (:image_index card)
+                      :rear {:id (:index card)
                              :alt (:image_rear_alt card)}
-                      :thumb {:id (:image_index card)
+                      :thumb {:id (:index card)
                               :alt (:subject_description card)}})
-      (assoc :flags {:rp (:rp card)
+      (assoc :flags {:draft (:draft card)
+                     :rp (:rp card)
                      :used (:used card)
                      :posted (:posted card)
                      :franked (:franked card)
@@ -118,39 +111,34 @@
       (assoc :subject {:description (:subject_description card)
                        :location (:subject_location card)
                        :current_view (:subject_current_view card)})
-      (dissoc :collection_index
-              :posted_year
-              :posted_month
-              :posted_day
-              :posted_date
-              :posted_date_approximate
-              :publication_year
-              :publication_month
-              :publication_day
-              :publication_date
-              :publication_date_approximate
-              :recipient_name
-              :recipient_address
-              :recipient_location
-              :publisher_name
-              :series_name
-              :series_entry
-              :image_index
-              :image_front_alt
-              :image_rear_alt
+      (dissoc :draft
+              :divided_back
               :rp
               :used
               :posted
               :franked
-              :divided_back
+              :image_front_alt
+              :image_rear_alt
+              :publication_year
+              :publication_month
+              :publication_day
+              :publication_date_approximate
+              :posted_year
+              :posted_month
+              :posted_day
+              :posted_date_approximate
               :subject_description
               :subject_location
-              :subject_current_view)))
+              :subject_current_view
+              :recipient_name
+              :recipient_address
+              :recipient_location)))
 
 (defn get-card
   "Fetch a card by ID"
   [conn card-id]
   (let [sql (-> (h/select :p/id
+                          :p/draft
                           :p/index
                           :p/divided-back
                           :p/rp
@@ -158,7 +146,7 @@
                           :p/posted
                           :p/franked
                           :p/image-front-alt
-                          :p/image-rear_alt
+                          :p/image-rear-alt
                           :p/publication-year
                           :p/publication-month
                           :p/publication-day
@@ -173,34 +161,26 @@
                           :p/subject-location
                           :p/subject-current-view
                           :p/notes
-                          :p/publisher
-                          :p/recipient
-                          :p/series
+                          :p/series_id
+                          :p/publisher_id
+                          :p/publication_description
                           :p/recipient-name
                           :p/recipient-address
-                          :p/recipient-location
-                          :s/series-name)
+                          :p/recipient-location)
                 (h/from [:postcard :p])
-                (h/left-join [:publisher :pb] [:= :p.publisher :pb.id])
-                (h/left-join [:series :s] [:= :p.series :s.id])
+                (h/left-join [:publisher :pb] [:= :p.publisher_id :pb.id])
+                (h/left-join [:series :s] [:= :p.series_id :s.id])
                 (h/where [:= :p/id card-id])
-                (sql/format))
-        card-detail (-> (jdbc/execute-one! conn sql opts)
-                        (update :subject_location dat/datafy)
-                        (update :recipient_location dat/datafy))
-        tags (card-tags conn card-id)
-        stamps (card-stamps conn card-id)]
-    (-> card-detail
-        (assoc :tags tags
-               :stamps stamps)
-        transform-card)))
-
-(comment
-
-  (let [conn (:rhinocratic.deltiologue/db (user/system))]
-    (tap> (get-card conn 42)))
-
-  #_())
+                (sql/format))]
+    (when-let [card (jdbc/execute-one! conn sql opts)]
+      (let [tags (card-tags conn card-id)
+            stamps (card-stamps conn card-id)]
+        (-> card
+            (update :subject_location dat/datafy)
+            (update :recipient_location dat/datafy)
+            (assoc :tags tags
+                   :stamps stamps)
+            transform-card)))))
 
 (defn- new-card
   "Create a new card"
