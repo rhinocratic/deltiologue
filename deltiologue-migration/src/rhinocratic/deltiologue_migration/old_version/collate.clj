@@ -13,7 +13,7 @@
   [group-key index-key rows]
   (->> rows
        (group-by group-key)
-       (map-indexed (fn [idx [_ vs]] (map #(assoc % index-key idx) vs)))
+       (map-indexed (fn [idx [_ vs]] (map #(assoc % index-key (inc idx)) vs)))
        (apply concat)))
 
 (defn dedupe-rows
@@ -30,7 +30,7 @@
 (defn link-to-postcards
   [rows dest-table link-table join-key index-key & other-keys]
   (let [indexed (->> rows
-                     (map-indexed #(assoc %2 :postcard-id %1))
+                     (map-indexed #(assoc %2 :postcard-id (inc %1)))
                      (remove #(nil? (join-key %)))
                      (project (concat [:postcard-id join-key] other-keys))
                      (index-by join-key index-key))]
@@ -70,7 +70,7 @@
       (update :misc #(concat % (:other-tags card)))
       (dissoc :other-tags)
       (->> (reduce-kv extract-fields []))
-      (->> (map #(assoc % :id id)))))
+      (->> (map #(assoc % :id (inc id))))))
 
 (defn merged-tags
   [cards]
@@ -83,59 +83,6 @@
          (apply concat)
          (reduce rfn {}))))
 
-(defn make-series
-  [rows collated]
-  (let [series (->> rows
-                    (map :series-name)
-                    distinct
-                    (filter some?)
-                    (map-indexed #(vector %1 %2))
-                    (into {}))
-        lookup (reduce-kv (fn [m k v] (assoc m v k)) {} series)
-        series-table (map #(hash-map :series-name %) (vals series))]
-    (-> collated
-        (update :postcard #(map (fn [card] (assoc card
-                                                  :series (lookup (:series-name card))
-                                                  :series-entry nil)) %))
-        (update :postcard #(map (fn [card] (dissoc card :series-name)) %))
-        (assoc :series series-table))))
-
-(defn make-recipient
-  [rows collated]
-  (let [recipients (->> rows
-                        (map :recipient-name)
-                        distinct
-                        (filter some?)
-                        (map-indexed #(vector %1 %2))
-                        (into (sorted-map)))
-        lookup (reduce-kv (fn [m k v] (assoc m v k)) {} recipients)
-        recipient-table (map #(hash-map :recipient-name %
-                                        :recipient-address %
-                                        :recipient-location nil) (vals recipients))]
-    (-> collated
-        (update :postcard #(map (fn [card] (assoc card
-                                                  :recipient (lookup (:recipient-name card)))) %))
-        (update :postcard #(map (fn [card] (dissoc card :recipient-name)) %))
-        (assoc :recipient recipient-table))))
-
-(defn make-publisher
-  [rows collated]
-  (let [publishers (->> rows
-                        (map :publisher-name)
-                        distinct
-                        (filter some?)
-                        (map-indexed #(vector %1 %2))
-                        (into (sorted-map)))
-        lookup (reduce-kv (fn [m k v] (assoc m v k)) {} publishers)
-        publisher-table (->> publishers
-                             vals
-                             (map #(hash-map :publisher-name %)))]
-    (-> collated
-        (update :postcard #(map (fn [card] (assoc card
-                                                  :publisher (lookup (:publisher-name card)))) %))
-        (update :postcard #(map (fn [card] (dissoc card :publisher-name)) %))
-        (assoc :publisher publisher-table))))
-
 (defn collate-table-dispatch
   [_rows _m table]
   table)
@@ -144,13 +91,12 @@
 
 (defmethod collate-table :postcard
   [rows m _table]
-  (merge m {:postcard (->> rows (project [:collection-index
+  (merge m {:postcard (->> rows (project [:index
                                           :divided-back
                                           :rp
                                           :used
                                           :posted
                                           :franked
-                                          :image-index
                                           :image-front-alt
                                           :image-rear-alt
                                           :publication-year
@@ -168,25 +114,23 @@
                                           :subject-location
                                           :subject-current-view
                                           :notes
-                                          :publisher
-                                          :recipient
-                                          :series
-                                          :publisher-name
+                                          :series-id
+                                          :publisher-id
+                                          :publication-description
+                                          :recipient-name
+                                          :recipient-address
+                                          :recipient-location
                                           :recipient-name
                                           :series-name])
                            (map #(assoc % :draft false)))}))
 
-(defmethod collate-table :series
-  [rows m _table]
-  (make-series rows m))
+;; (defmethod collate-table :series
+;;   [rows m _table]
+;;   (make-series rows m))
 
-(defmethod collate-table :publisher
-  [rows m _table]
-  (make-publisher rows m))
-
-(defmethod collate-table :recipient
-  [rows m _table]
-  (make-recipient rows m))
+;; (defmethod collate-table :publisher
+;;   [rows m _table]
+;;   (make-publisher rows m))
 
 (defmethod collate-table :stamp
   [rows m _table]
@@ -200,14 +144,14 @@
                             (assoc result tag tag-text)) {})
                   (map #(zipmap [:tag-name :display-text] %)))
         tag-position (->> tags
-                          (map-indexed #(vector (:tag-name %2) %1))
+                          (map-indexed #(vector (:tag-name %2) (inc %1)))
                           (into {}))
         tag-category-keys (->> merged
                                keys
                                (map first)
                                distinct)
         tag-category-position (->> tag-category-keys
-                                   (map-indexed #(vector %2 %1))
+                                   (map-indexed #(vector %2 (inc %1)))
                                    (into {}))
         cat-display {:notable-buildings "Notable Buildings"
                      :location "Location"
@@ -256,9 +200,6 @@
 (defn collate
   [{:keys [card] :as data}]
   (let [card-tables [:postcard
-                     :publisher
-                     :recipient
-                     :series
                      :stamp
                      :tag]
         collated-cards (reduce (partial collate-table card) {} card-tables)]
@@ -271,12 +212,14 @@
 
   (require '[rhinocratic.deltiologue-migration.old-version.spreadsheet :as spreadsheet]
            '[rhinocratic.deltiologue-migration.old-version.notes :as notes]
-           '[rhinocratic.deltiologue-migration.old-version.transform :as transform])
+           '[rhinocratic.deltiologue-migration.old-version.transform :as transform]
+           '[rhinocratic.deltiologue-migration.old-version.manual :as manual]
+           '[rhinocratic.deltiologue-migration.old-version.collate :as collate])
 
-  (def m (->> (merge
-               (spreadsheet/parse)
-               (notes/parse)
-               (transform/transform))))
+  (let [rows (->> (merge (spreadsheet/parse) (notes/parse) (manual/tables))
+                  transform/transform
+                  collate/collate)]
+    (tap> rows))
 
   (tap> (merged-tags (:card m)))
 

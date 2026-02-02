@@ -34,7 +34,7 @@
   "Fetch all card summaries"
   [conn]
   (let [sql (-> (h/select :p/id
-                          :p/collection-index
+                          :p/index
                           :p/subject-description
                           :p/image-thumb)
                 (h/from [:postcard :p])
@@ -151,13 +151,12 @@
   "Fetch a card by ID"
   [conn card-id]
   (let [sql (-> (h/select :p/id
-                          :p/collection-index
+                          :p/index
                           :p/divided-back
                           :p/rp
                           :p/used
                           :p/posted
                           :p/franked
-                          :p/image-index
                           :p/image-front-alt
                           :p/image-rear_alt
                           :p/publication-year
@@ -177,15 +176,12 @@
                           :p/publisher
                           :p/recipient
                           :p/series
-                          :pb/publisher-name
-                          :r/recipient-name
-                          :r/recipient-address
-                          :r/recipient-location
-                          :s/series-name
-                          :p/series-entry)
+                          :p/recipient-name
+                          :p/recipient-address
+                          :p/recipient-location
+                          :s/series-name)
                 (h/from [:postcard :p])
                 (h/left-join [:publisher :pb] [:= :p.publisher :pb.id])
-                (h/left-join [:recipient :r] [:= :p.recipient :r.id])
                 (h/left-join [:series :s] [:= :p.series :s.id])
                 (h/where [:= :p/id card-id])
                 (sql/format))

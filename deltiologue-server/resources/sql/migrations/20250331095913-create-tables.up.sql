@@ -52,21 +52,12 @@ create table if not exists stamp (
 --;;
 create table if not exists series (
     id int generated always as identity,
+    publisher_id int,
     series_name text not null,
     primary key(id),
-    unique(series_name)
+    unique(series_name),
+    constraint fk_series_publisher foreign key(publisher_id) references publisher(id) on delete cascade
 );
---;;
-create table if not exists recipient (
-    id int generated always as identity,
-    recipient_name text not null,
-    recipient_address text,
-    recipient_location geometry,
-    primary key(id),
-    unique(recipient_name)
-);
---;;
-create index idx_recipient_location on recipient using gist (geography(recipient_location));
 --;;
 create table if not exists note_image (
     id int generated always as identity,
@@ -79,13 +70,12 @@ create table if not exists note_image (
 create table if not exists postcard (
     id int generated always as identity,
     draft boolean not null default true,
-    collection_index int not null,
+    index int not null,
     divided_back boolean not null,
     rp boolean not null,
     used boolean not null,
     posted boolean not null,
     franked boolean not null,
-    image_index int,
     image_front_alt text,
     image_rear_alt text,
     publication_year int,
@@ -102,17 +92,18 @@ create table if not exists postcard (
     subject_location geography,
     subject_current_view text,
     notes text,
-    publisher int,
-    recipient int,
-    series int,
-    series_entry text,
+    series_id int,
+    publisher_id int,
+    publication_description text,
+    recipient_name text,
+    recipient_address text,
+    recipient_location geography,
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp,
     primary key(id),
-    unique(collection_index),
-    constraint fk_postcard_publisher foreign key(publisher) references publisher(id) on delete cascade,
-    constraint fk_postcard_recipient foreign key(recipient) references recipient(id) on delete cascade,
-    constraint fk_postcard_series foreign key(series) references series(id) on delete cascade
+    unique(index),
+    constraint fk_postcard_publisher foreign key(publisher_id) references publisher(id) on delete cascade,
+    constraint fk_postcard_series foreign key(series_id) references series(id) on delete cascade
 );
 --;;
 alter table postcard add column fts tsvector
@@ -122,7 +113,9 @@ generated always as
 --;;
 create index idx_postcard_fts_gin on postcard using gin (fts);
 --;;
-create index idx_postcard_location on postcard using gist (geography(subject_location));
+create index idx_postcard_subject_location on postcard using gist (geography(subject_location));
+--;;
+create index idx_postcard_recipient_location on postcard using gist (geography(recipient_location));
 --;;
 create trigger postcard_moddatetime
 	before update on postcard

@@ -21,22 +21,16 @@
    :tag            [:tag-name
                     :display-text]
    :stamp          [:stamp-description]
-   :publisher      [:publisher-name]
-   :recipient      [:recipient-name
-                    :recipient-address
-                    :recipient-location]
-   :series         [:series-name]
    :note-image     [:filename
                     :caption
                     :alt-text]
    :postcard       [:draft
-                    :collection-index
+                    :index
                     :divided-back
                     :rp
                     :used
                     :posted
                     :franked
-                    :image-index
                     :image-front-alt
                     :image-rear-alt
                     :publication-year
@@ -53,10 +47,12 @@
                     :subject-location
                     :subject-current-view
                     :notes
-                    :publisher
-                    :recipient
-                    :series
-                    :series-entry]
+                    :series-id
+                    :publisher-id
+                    :publication-description
+                    :recipient-name
+                    :recipient-address
+                    :recipient-location]
    :postcard-tag   [:postcard-id
                     :tag-id
                     :tag-category-id]
@@ -93,9 +89,6 @@
   [:tag-category
    :tag
    :stamp
-   :series
-   :recipient
-   :publisher
    :note
    :note-image
    :reference

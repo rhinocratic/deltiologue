@@ -220,7 +220,7 @@
                    split-by-title
                    (map make-note))
         ref-indexes (->> references
-                         (map-indexed #(vector (:idx %2) %1))
+                         (map-indexed #(vector (:idx %2) (inc %1)))
                          (into {}))
         resolve-index (fn [para]
                         (let [para-idx (ref-index (.getText para))]
@@ -230,7 +230,7 @@
                              (map #(filter reference? %))
                              (map #(map resolve-index %))
                              (map-indexed (fn [pos indexes]
-                                            (map (partial vector pos) indexes)))
+                                            (map (partial vector (inc pos)) indexes)))
                              (apply concat)
                              (map #(zipmap [:note-id :reference-id] %))
                              distinct)]

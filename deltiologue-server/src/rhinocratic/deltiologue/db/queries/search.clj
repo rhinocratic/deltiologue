@@ -12,7 +12,7 @@
 (defn search
   [conn terms]
   (let [sql (-> (h/select :p/id
-                          :p/collection-index
+                          :p/index
                           :p/subject-description
                           :p/image-thumb)
                 (h/from [:postcard :p] [[:to_tsquery terms] :ts])
@@ -24,7 +24,7 @@
 (comment
 
   (let [conn (->> (user/system) :rhinocratic.deltiologue/db)
-        sql (-> (h/select :p/collection-index
+        sql (-> (h/select :p/index
                           :p/subject-description
                           :p/notes)
                 (h/from [:postcard :p] [[:to_tsquery "sail"] :ts])

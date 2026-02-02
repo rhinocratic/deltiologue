@@ -158,7 +158,7 @@
 
 (defmethod transform-field :no
   [_ m _k v]
-  (assoc m :collection-index (int v)))
+  (assoc m :index (int v)))
 
 (defmethod transform-field :notes
   [note-lookup m _k v]
@@ -250,11 +250,26 @@
     (assoc m :current-view-description nil)
     (assoc m :current-view-description v)))
 
+(defn split-recipient
+  [s]
+  (let [comma-pos (string/index-of s ",")
+        name (if comma-pos
+               (string/trim (subs s 0 comma-pos))
+               s)
+        address (if comma-pos
+                  (string/trim (subs s (inc comma-pos)))
+                  nil)]
+    {:recipient-name name
+     :recipient-address address}))
+
 (defmethod transform-field :recipient
   [_ m _k v]
   (if (string/blank? v)
-    (assoc m :recipient-name nil)
-    (assoc m :recipient-name v)))
+    (assoc m
+           :recipient-name nil
+           :recipient-address nil
+           :recipient-location nil)
+    (merge m (split-recipient v))))
 
 (defmethod transform-field :events
   [_ m _k v]
@@ -285,11 +300,9 @@
   (let [remove? (empty-or-matches-any? [#"^\s*[Nn]ot known?\s*$"])]
     (if (remove? v)
       (assoc m
-             :publisher-name nil
-             :series-name nil)
+             :publication-description nil)
       (assoc m
-             :publisher-name v
-             :series-name v))))
+             :publication-description v))))
 
 (defmethod transform-field :stamp-attached
   [_ m _k v]
@@ -336,9 +349,7 @@
   (->> rows
        (map #(reduce-kv (partial transform-field note-data) {} %))
        (map-indexed #(assoc %2 :postcard-id %1))
-       (map-indexed #(assoc %2
-                            :image-index %1
-                            :image-rear-alt ""))))
+       (map-indexed #(assoc %2 :image-rear-alt ""))))
 
 (defn make-note-lookup
   [{:keys [note]}]
