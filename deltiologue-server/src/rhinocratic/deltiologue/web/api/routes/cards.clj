@@ -57,6 +57,10 @@
                    ::entry]))
 
 ;; Stamps
+(defn condition?
+  [s]
+  (#{"intact" "partially removed" "damaged" "badly damaged"} s))
+(s/def ::condition (s/and string? condition?))
 (s/def ::stamp
   (s/keys :req-un [::id
                    ::description
@@ -148,8 +152,8 @@
               :responses {200 {:body ::card-summary-list}}}
         :post {:summary "Create a new card"
                :handler (partial #'h/new-card conn)
-               :parameters {:body ::new-card}
-               :responses {201 {:body ::card}}}}]
+               #_#_:parameters {:body ::new-card}
+               #_#_:responses {201 {:body ::card}}}}]
    ["/:card-id" {:name ::card
                  :parameters {:path {:card-id int?}}
                  :get {:summary "Fetch a card by ID"
@@ -157,8 +161,8 @@
                        :responses {200 {:body ::card}}}
                  :put {:summary "Update a card by ID"
                        :handler (partial #'h/update-card conn)
-                       :parameters {:body ::card}
-                       :responses {200 {:body ::card}}}
+                       #_#_:parameters {:body ::card}
+                       #_#_:responses {200 {:body ::card}}}
                  :delete {:summary "Delete a card"
                           :handler (partial #'h/delete-card conn)
-                          :responses {200 {:body ::card}}}}]])
+                          #_#_:responses {200 {:body ::card}}}}]])
