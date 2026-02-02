@@ -12,7 +12,8 @@
   "Fetch all references"
   [conn]
   (let [sql (-> (h/select :r/id
-                          :r/idx
+                          :r/index
+                          :r/authors
                           :r/medium
                           :r/accessed
                           :r/source
@@ -37,7 +38,8 @@
   "Fetch a reference by ID"
   [conn reference-id]
   (let [sql (-> (h/select :r/id
-                          :r/idx
+                          :r/index
+                          :r/authors
                           :r/medium
                           :r/accessed
                           :r/source
@@ -85,7 +87,8 @@
                  :accessed (clojure.instant/read-instant-timestamp "2018-01-11T00:00:00.000-00:00"),
                  :title "Heysham Harbour",
                  :medium "Online",
-                 :idx 7656765,
+                 :index 7656765,
+                 :authors nil
                  :issue_note nil}]
     (new-reference conn new-ref))
 
@@ -103,7 +106,8 @@
                      :accessed (clojure.instant/read-instant-timestamp "2018-01-11T00:00:00.000-00:00"),
                      :title "Heysham Harbour or thereabouts",
                      :medium "Online",
-                     :idx 7656766,
+                     :index 7656766,
+                     :authors nil,
                      :issue_note nil}]
     (update-reference conn updated-ref))
 

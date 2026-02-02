@@ -5,6 +5,8 @@ drop index if exists idx_note_reference_note;
 --;;
 drop table if exists note_reference;
 --;;
+drop index if exists idx_reference_index;
+--;;
 drop table if exists reference;
 --;;
 drop table if exists note;

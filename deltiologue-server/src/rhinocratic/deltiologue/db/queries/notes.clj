@@ -21,7 +21,8 @@
   "Fetch all references associated with a note"
   [conn note-id]
   (let [sql (-> (h/select :r/id
-                          :r/idx
+                          :r/index
+                          :r/authors
                           :r/medium
                           :r/accessed
                           :r/source

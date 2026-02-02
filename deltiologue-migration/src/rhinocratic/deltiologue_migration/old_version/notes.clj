@@ -138,7 +138,8 @@
         runs (.getRuns para)
         title (ref-title runs)
         source (ref-source runs title)]
-    {:idx (ref-index txt)
+    {:index (ref-index txt)
+     :authors nil
      :medium (ref-medium txt)
      :accessed (ref-accessed txt)
      :source (ref-source runs title)
@@ -212,15 +213,15 @@
         references (->> paras
                         (filter reference?)
                         (map make-reference)
-                        (group-by :idx)
+                        (group-by :index)
                         (map #(first (val %)))
-                        (sort-by :idx))
+                        (sort-by :index))
         notes (->> paras
                    (remove reference?)
                    split-by-title
                    (map make-note))
         ref-indexes (->> references
-                         (map-indexed #(vector (:idx %2) (inc %1)))
+                         (map-indexed #(vector (:index %2) (inc %1)))
                          (into {}))
         resolve-index (fn [para]
                         (let [para-idx (ref-index (.getText para))]

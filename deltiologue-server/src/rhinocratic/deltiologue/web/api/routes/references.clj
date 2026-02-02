@@ -4,7 +4,8 @@
    [rhinocratic.deltiologue.web.api.handlers.references :as h]))
 
 (s/def ::id int?)
-(s/def ::idx int?)
+(s/def ::index int?)
+(s/def ::authors string?)
 (s/def ::medium (s/nilable string?))
 (s/def ::accessed (s/nilable inst?))
 (s/def ::source (s/nilable string?))
@@ -13,8 +14,9 @@
 (s/def ::issue_note (s/nilable string?))
 (s/def ::available (s/nilable string?))
 (s/def ::new-reference
-  (s/keys :req-un [::idx]
-          :opt-un [::medium
+  (s/keys :req-un [::index]
+          :opt-un [::authors
+                   ::medium
                    ::accessed
                    ::source
                    ::title
@@ -22,8 +24,9 @@
                    ::available]))
 (s/def ::reference
   (s/keys :req-un [::id
-                   ::idx]
-          :opt-un [::medium
+                   ::index]
+          :opt-un [::authors
+                   ::medium
                    ::accessed
                    ::source
                    ::title

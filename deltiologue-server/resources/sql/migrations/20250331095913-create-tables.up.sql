@@ -175,7 +175,8 @@ create trigger note_moddatetime
 --;;
 create table if not exists reference (
     id int generated always as identity,
-    idx int not null,
+    index int not null,
+    authors text,
     medium text,
     accessed date,
     source text,
@@ -184,10 +185,10 @@ create table if not exists reference (
     issue_note text,
     available text,
     primary key(id),
-    unique(idx)
+    unique(index)
 );
 --;;
-create index idx_reference_idx on reference(idx);
+create index idx_reference_index on reference(index);
 --;;
 create table if not exists note_reference (
     note_id int not null,

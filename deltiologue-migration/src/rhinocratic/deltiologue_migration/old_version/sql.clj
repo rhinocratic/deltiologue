@@ -63,7 +63,8 @@
    :note           [:draft
                     :title
                     :body]
-   :reference      [:idx
+   :reference      [:index
+                    :authors
                     :medium
                     :accessed
                     :source
