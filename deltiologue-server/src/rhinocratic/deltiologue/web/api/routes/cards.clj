@@ -107,7 +107,6 @@
 (s/def ::id int?)
 (s/def ::index int?)
 (s/def ::notes string?)
-(s/def ::transcript string?)
 (s/def ::card
   (s/keys :req-un [::id
                    ::index
@@ -119,8 +118,7 @@
                    ::stamps
                    ::flags
                    ::tags
-                   ::notes
-                   ::transcript]))
+                   ::notes]))
 (s/def ::new-card
   (s/keys :req-un [::index
                    ::images
@@ -131,8 +129,7 @@
                    ::stamps
                    ::flags
                    ::tags
-                   ::notes
-                   ::transcript]))
+                   ::notes]))
 
 ;; Summary
 (s/def ::card-summary

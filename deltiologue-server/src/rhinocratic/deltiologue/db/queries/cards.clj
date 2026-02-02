@@ -104,11 +104,11 @@
       (assoc :series {:id (:series card)
                       :name (:series_name card)
                       :entry (:series_entry card)})
-      (assoc :images {:front {:id (:image_front card)
+      (assoc :images {:front {:id (:image_index card)
                               :alt (:image_front_alt card)}
-                      :rear {:id (:image_rear card)
+                      :rear {:id (:image_index card)
                              :alt (:image_rear_alt card)}
-                      :thumb {:id (:image_thumb card)
+                      :thumb {:id (:image_index card)
                               :alt (:subject_description card)}})
       (assoc :flags {:rp (:rp card)
                      :used (:used card)
@@ -135,11 +135,9 @@
               :publisher_name
               :series_name
               :series_entry
-              :image_front
+              :image_index
               :image_front_alt
-              :image_rear
               :image_rear_alt
-              :image_thumb
               :rp
               :used
               :posted
@@ -159,11 +157,9 @@
                           :p/used
                           :p/posted
                           :p/franked
-                          :p/image-front
+                          :p/image-index
                           :p/image-front-alt
-                          :p/image-rear
                           :p/image-rear_alt
-                          :p/image-thumb
                           :p/publication-year
                           :p/publication-month
                           :p/publication-day
@@ -178,7 +174,6 @@
                           :p/subject-location
                           :p/subject-current-view
                           :p/notes
-                          :p/transcript
                           :p/publisher
                           :p/recipient
                           :p/series

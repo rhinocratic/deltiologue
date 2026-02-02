@@ -26,9 +26,6 @@
                     :recipient-address
                     :recipient-location]
    :series         [:series-name]
-   :image          [:url
-                    :title
-                    :alt-text]
    :note-image     [:filename
                     :caption
                     :alt-text]
@@ -39,11 +36,9 @@
                     :used
                     :posted
                     :franked
-                    :image-front
+                    :image-index
                     :image-front-alt
-                    :image-rear
                     :image-rear-alt
-                    :image-thumb
                     :publication-year
                     :publication-month
                     :publication-day
@@ -58,7 +53,6 @@
                     :subject-location
                     :subject-current-view
                     :notes
-                    :transcript
                     :publisher
                     :recipient
                     :series
@@ -106,7 +100,6 @@
    :note-image
    :reference
    :note-reference
-   :image
    :postcard
    :postcard-tag
    :postcard-stamp

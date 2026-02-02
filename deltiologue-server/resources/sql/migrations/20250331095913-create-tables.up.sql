@@ -2,7 +2,7 @@
 create extension moddatetime;
 --;;
 create table if not exists content (
-    id int generated always as identity (minvalue 0 start with 0 increment by 1),
+    id int generated always as identity,
     draft boolean not null default true,
     title text not null,
     content text not null,
@@ -17,14 +17,14 @@ create trigger content_moddatetime
 	execute procedure moddatetime (updated_at);
 --;;
 create table if not exists publisher (
-    id int generated always as identity (minvalue 0 start with 0 increment by 1),
+    id int generated always as identity,
     publisher_name text not null,
     primary key (id),
     unique(publisher_name)
 );
 --;;
 create table if not exists tag_category (
-    id int generated always as identity (minvalue 0 start with 0 increment by 1),
+    id int generated always as identity,
     category_name text not null,
     display_text text not null,
     colour text not null,
@@ -36,7 +36,7 @@ create table if not exists tag_category (
 create index idx_tag_category_category_name on tag_category(category_name);
 --;;
 create table if not exists tag (
-    id int generated always as identity (minvalue 0 start with 0 increment by 1),
+    id int generated always as identity,
     tag_name text not null,
     display_text text not null,
     primary key(id),
@@ -44,21 +44,21 @@ create table if not exists tag (
 );
 --;;
 create table if not exists stamp (
-    id int generated always as identity (minvalue 0 start with 0 increment by 1),
+    id int generated always as identity,
     stamp_description text not null,
     primary key(id),
     unique(stamp_description)
 );
 --;;
 create table if not exists series (
-    id int generated always as identity (minvalue 0 start with 0 increment by 1),
+    id int generated always as identity,
     series_name text not null,
     primary key(id),
     unique(series_name)
 );
 --;;
 create table if not exists recipient (
-    id int generated always as identity (minvalue 0 start with 0 increment by 1),
+    id int generated always as identity,
     recipient_name text not null,
     recipient_address text,
     recipient_location geometry,
@@ -68,17 +68,8 @@ create table if not exists recipient (
 --;;
 create index idx_recipient_location on recipient using gist (geography(recipient_location));
 --;;
-create table if not exists image (
-    id int generated always as identity (minvalue 0 start with 0 increment by 1),
-    url text not null,
-    alt_text text not null,
-    title text not null,
-    primary key(id),
-    unique(url)
-);
---;;
 create table if not exists note_image (
-    id int generated always as identity (minvalue 0 start with 0 increment by 1),
+    id int generated always as identity,
     filename text not null,
     alt_text text not null,
     caption text not null,
@@ -86,7 +77,7 @@ create table if not exists note_image (
 );
 --;;
 create table if not exists postcard (
-    id int generated always as identity (minvalue 0 start with 0 increment by 1),
+    id int generated always as identity,
     draft boolean not null default true,
     collection_index int not null,
     divided_back boolean not null,
@@ -94,11 +85,9 @@ create table if not exists postcard (
     used boolean not null,
     posted boolean not null,
     franked boolean not null,
-    image_front int,
+    image_index int,
     image_front_alt text,
-    image_rear int,
     image_rear_alt text,
-    image_thumb int,
     publication_year int,
     publication_month int,
     publication_day int,
@@ -113,7 +102,6 @@ create table if not exists postcard (
     subject_location geography,
     subject_current_view text,
     notes text,
-    transcript text,
     publisher int,
     recipient int,
     series int,
@@ -122,9 +110,6 @@ create table if not exists postcard (
     updated_at timestamp not null default current_timestamp,
     primary key(id),
     unique(collection_index),
-    constraint fk_postcard_image_front foreign key(image_front) references image(id) on delete cascade,
-    constraint fk_postcard_image_rear foreign key(image_rear) references image(id) on delete cascade,
-    constraint fk_postcard_image_thumb foreign key(image_thumb) references image(id) on delete cascade,
     constraint fk_postcard_publisher foreign key(publisher) references publisher(id) on delete cascade,
     constraint fk_postcard_recipient foreign key(recipient) references recipient(id) on delete cascade,
     constraint fk_postcard_series foreign key(series) references series(id) on delete cascade
@@ -145,7 +130,7 @@ create trigger postcard_moddatetime
 	execute procedure moddatetime (updated_at);
 --;;
 create table if not exists slideshow (
-    id int generated always as identity (minvalue 0 start with 0 increment by 1),
+    id int generated always as identity,
     postcard_id int not null,
     constraint fk_slideshow_postcard foreign key(postcard_id) references postcard(id) on delete cascade
 );
@@ -181,7 +166,7 @@ create index idx_postcard_tag_tag on postcard_tag(tag_id);
 create index idx_postcard_tag_tag_category on postcard_tag(tag_category_id);
 --;;
 create table if not exists note (
-    id int generated always as identity (minvalue 0 start with 0 increment by 1),
+    id int generated always as identity,
     draft boolean not null default true,
     title text,
     body text,
@@ -196,7 +181,7 @@ create trigger note_moddatetime
 	execute procedure moddatetime (updated_at);
 --;;
 create table if not exists reference (
-    id int generated always as identity (minvalue 0 start with 0 increment by 1),
+    id int generated always as identity,
     idx int not null,
     medium text,
     accessed date,

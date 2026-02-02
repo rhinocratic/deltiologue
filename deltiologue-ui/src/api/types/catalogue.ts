@@ -1,8 +1,13 @@
+
+export interface Image {
+  id: string;
+  alt: string;
+}
 export interface CatalogueItem {
   id: string;
-  collection_index: string;
-  subject_description: string;
-  image_thumb: string;
+  index: string;
+  description: string;
+  image: Image;
 }
 
 export type Catalogue = CatalogueItem[];

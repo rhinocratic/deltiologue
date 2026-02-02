@@ -55,8 +55,6 @@ drop table if exists postcard;
 --;;
 drop table if exists note_image;
 --;;
-drop table if exists image;
---;;
 drop index if exists idx_recipient_location;
 --;;
 drop table if exists recipient;

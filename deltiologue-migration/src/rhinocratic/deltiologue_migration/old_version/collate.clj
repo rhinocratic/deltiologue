@@ -150,11 +150,9 @@
                                           :used
                                           :posted
                                           :franked
-                                          :image-front
+                                          :image-index
                                           :image-front-alt
-                                          :image-rear
                                           :image-rear-alt
-                                          :image-thumb
                                           :publication-year
                                           :publication-month
                                           :publication-day
@@ -170,7 +168,6 @@
                                           :subject-location
                                           :subject-current-view
                                           :notes
-                                          :transcript
                                           :publisher
                                           :recipient
                                           :series

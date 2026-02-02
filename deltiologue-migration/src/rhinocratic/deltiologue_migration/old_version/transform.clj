@@ -337,12 +337,8 @@
        (map #(reduce-kv (partial transform-field note-data) {} %))
        (map-indexed #(assoc %2 :postcard-id %1))
        (map-indexed #(assoc %2
-                            :image-front (* 3 %1)
-                            :image-rear (+ 1 (* 3 %1))
-                            :image-rear-alt ""
-                            :image-thumb (+ 2 (* 3 %1))
-                            :transcript ""))))
-
+                            :image-index %1
+                            :image-rear-alt ""))))
 
 (defn make-note-lookup
   [{:keys [note]}]
@@ -356,11 +352,9 @@
 
 (defn transform
   [{:keys [card] :as data}]
-  (let [note-lookup (make-note-lookup data)
-        images (images/image-table)]
+  (let [note-lookup (make-note-lookup data)]
     (-> data
-        (update :card transform-cards note-lookup)
-        (assoc :image images))))
+        (update :card transform-cards note-lookup))))
 
 (comment
 
