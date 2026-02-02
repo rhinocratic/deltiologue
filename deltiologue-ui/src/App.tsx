@@ -10,6 +10,8 @@ import { searchLoader } from "./pages/search/searchLoader";
 import { detailsLoader } from "./pages/details/detailsLoader";
 import { noteCatalogueLoader } from "./pages/notes/noteCatalogueLoader";
 import "primereact/resources/themes/md-light-deeppurple/theme.css";
+import AboutPage from "./pages/about/AboutPage";
+import { aboutLoader } from "./pages/about/aboutLoader";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +41,11 @@ const router = createBrowserRouter([
       {
         path: "/links",
         element: <LinksPage />,
+      },
+      {
+        path: "/about",
+        element: <AboutPage />,
+        loader: aboutLoader
       },
       {
         path: "*",

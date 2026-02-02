@@ -27,7 +27,7 @@ const renderedSection = (idx: string, items: NoteCatalogueItem[]) => {
 };
 
 const renderedCatalogue = (cat: NoteCatalogue) => {
-  const sections = Object.keys(cat).slice(0, 2).map(key => renderedSection(key, cat[key]));
+  const sections = Object.keys(cat).map(key => renderedSection(key, cat[key]));
   return (
     <Accordion activeIndex={0}>
       {sections}

@@ -22,8 +22,8 @@ export default function NavBar() {
           <Link state={{ idx: 1 }} to="/notes" className="block mt-4 lg:inline-block lg:mt-0 text-stone-600 hover:text-red-900 mr-4">
             Notes
           </Link>
-          <Link state={{ idx: 2 }} to="/links" className="block mt-4 lg:inline-block lg:mt-0 text-stone-600  hover:text-red-900">
-            Links
+          <Link state={{ idx: 2 }} to="/about" className="block mt-4 lg:inline-block lg:mt-0 text-stone-600  hover:text-red-900">
+            About
           </Link>
         </div>
 

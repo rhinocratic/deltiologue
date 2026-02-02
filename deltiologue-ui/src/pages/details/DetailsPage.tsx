@@ -4,6 +4,7 @@ import { toShortDate } from "../../util/dates";
 
 
 export default function DetailsPage() {
+
   const { details } = useLoaderData() as DetailsLoaderResult;
 
   return <div>
