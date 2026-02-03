@@ -6,7 +6,7 @@ const LoginBar = () => {
   const { logout } = useAuth0();
 
   if (isLoading) {
-    return <div className="loading-text">Loading profile...</div>;
+    return <div className="absolute top-1 flex justify-between items-center flex-shrink-0 text-stone-600 text-xs">Loading profile...</div>;
   }
 
   return (

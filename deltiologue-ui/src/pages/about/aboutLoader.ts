@@ -9,6 +9,8 @@ export async function aboutLoader(): Promise<AboutLoaderResult> {
 
   const data = await getAboutContent();
 
+  console.log(data);
+
   return { data };
 }
 
