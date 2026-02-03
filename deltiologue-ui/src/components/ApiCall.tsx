@@ -9,7 +9,7 @@ export default function ApiCall() {
     try {
       const token = await getAccessTokenSilently();
 
-      const response = await fetch('http://localhost:8080/api/card/1/detail', {
+      const response = await fetch('http://localhost:8080/api/cards/1', {
         headers: {
           Authorization: `Bearer ${token}`
         }

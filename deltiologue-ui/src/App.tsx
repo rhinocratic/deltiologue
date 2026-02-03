@@ -13,6 +13,8 @@ import AboutPage from "./pages/about/AboutPage";
 import { aboutLoader } from "./pages/about/aboutLoader";
 import CataloguePage from "./pages/catalogue/CataloguePage";
 import { catalogueLoader } from "./pages/catalogue/catalogueLoader";
+import AdminPage from "./pages/admin/AdminPage";
+import Protected from "./components/auth/Protected";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +50,10 @@ const router = createBrowserRouter([
         path: "/about",
         element: <AboutPage />,
         loader: aboutLoader
+      },
+      {
+        path: "/admin",
+        element: <Protected component={AdminPage} />,
       },
       {
         path: "*",

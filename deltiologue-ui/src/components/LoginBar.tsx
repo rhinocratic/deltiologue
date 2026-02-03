@@ -1,9 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 
 const LoginBar = () => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
-  const { loginWithRedirect } = useAuth0();
-  const { logout } = useAuth0();
+  const { user, isAuthenticated, isLoading, loginWithRedirect, logout } = useAuth0();
 
   if (isLoading) {
     return <div className="absolute top-1 flex justify-between items-center flex-shrink-0 text-stone-600 text-xs">Loading profile...</div>;

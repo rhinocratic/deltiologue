@@ -9,8 +9,6 @@ export default function CataloguePage() {
     return (
       <div>
         <div>{item.id}</div>
-        <div>{item.index}</div>
-        <div>{item.image.id}</div>
         <div>{item.description}</div>
         <div>
           <img

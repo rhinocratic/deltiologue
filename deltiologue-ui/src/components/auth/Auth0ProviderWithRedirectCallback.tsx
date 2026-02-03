@@ -11,7 +11,7 @@ const Auth0ProviderWithRedirectCallback = ({
 }) => {
   const navigate = useNavigate();
 
-  const onRedirectCallback = (appState?: AppState, user?: User) => {
+  const onRedirectCallback = (appState?: AppState) => {
     navigate((appState?.returnTo) || window.location.pathname);
   };
 
