@@ -1,6 +1,6 @@
 import className from "classnames";
 import { FunctionComponent } from "react";
-import { Exclusive } from "../util/exclusive";
+import { Exclusive } from "../../util/exclusive";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   Partial<{

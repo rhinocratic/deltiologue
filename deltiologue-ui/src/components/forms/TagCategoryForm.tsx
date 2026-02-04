@@ -1,25 +1,25 @@
 import { useId, useState } from "react";
 import { ColorPickerChangeEvent } from "primereact/colorpicker";
-import Button from "../form_elements/Button";
-import ColourPicker from "../form_elements/ColourPicker";
-import Label from "../form_elements/Label";
-import TextField from "../form_elements/TextField";
-import Title from "../form_elements/Title";
-import Foot from "../form_elements/Foot";
-import Form from "../form_elements/Form";
-import TextArea from "../form_elements/TextArea";
-import Section from "../form_elements/Section";
-import FileUpload from "../form_elements/FileUpload";
-import Select from "../form_elements/Select";
-import Grid from "../form_elements/Grid";
-import CheckBox from "../form_elements/CheckBox";
-import Explanation from "../form_elements/Explanation";
-import Paragraph from "../form_elements/Paragraph";
-import FieldSet from "../form_elements/FieldSet";
-import CheckBoxField from "../form_elements/CheckBoxField";
-import Legend from "../form_elements/Legend";
-import RadioButton from "../form_elements/RadioButton";
-import RadioButtonGroup from "../form_elements/RadioButtonGroup";
+import Button from "./elements/Button";
+import ColourPicker from "./elements/ColourPicker";
+import Label from "./elements/Label";
+import TextField from "./elements/TextField";
+import Title from "./elements/Title";
+import Foot from "./elements/Foot";
+import Form from "./elements/Form";
+import TextArea from "./elements/TextArea";
+import Section from "./elements/Section";
+import FileUpload from "./elements/FileUpload";
+import Select from "./elements/Select";
+import Grid from "./elements/Grid";
+import CheckBox from "./elements/CheckBox";
+import Explanation from "./elements/Explanation";
+import Paragraph from "./elements/Paragraph";
+import FieldSet from "./elements/FieldSet";
+import CheckBoxField from "./elements/CheckBoxField";
+import Legend from "./elements/Legend";
+import RadioButton from "./elements/RadioButton";
+import RadioButtonGroup from "./elements/RadioButtonGroup";
 
 
 export default function TagCategoryForm() {
@@ -47,6 +47,7 @@ export default function TagCategoryForm() {
       <Section>
         <Title>Create a new tag category</Title>
         <Grid>
+
           <div className="sm:col-span-4">
             <Label htmlFor="description">Category Name</Label>
             <TextField

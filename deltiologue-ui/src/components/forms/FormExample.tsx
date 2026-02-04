@@ -1,30 +1,32 @@
-import Button from "../form_elements/Button";
-import Label from "../form_elements/Label";
-import TextField from "../form_elements/TextField";
-import Title from "../form_elements/Title";
-import Foot from "../form_elements/Foot";
-import Form from "../form_elements/Form";
-import TextArea from "../form_elements/TextArea";
-import Section from "../form_elements/Section";
-import FileUpload from "../form_elements/FileUpload";
-import Select from "../form_elements/Select";
-import Grid from "../form_elements/Grid";
-import CheckBox from "../form_elements/CheckBox";
-import Explanation from "../form_elements/Explanation";
-import Paragraph from "../form_elements/Paragraph";
-import FieldSet from "../form_elements/FieldSet";
-import CheckBoxField from "../form_elements/CheckBoxField";
-import Legend from "../form_elements/Legend";
-import RadioButton from "../form_elements/RadioButton";
-import RadioButtonGroup from "../form_elements/RadioButtonGroup";
+import Button from "./elements/Button";
+import Label from "./elements/Label";
+import TextField from "./elements/TextField";
+import Title from "./elements/Title";
+import Foot from "./elements/Foot";
+import Form from "./elements/Form";
+import TextArea from "./elements/TextArea";
+import Section from "./elements/Section";
+import FileUpload from "./elements/FileUpload";
+import Select from "./elements/Select";
+import Grid from "./elements/Grid";
+import CheckBox from "./elements/CheckBox";
+import Explanation from "./elements/Explanation";
+import Paragraph from "./elements/Paragraph";
+import FieldSet from "./elements/FieldSet";
+import CheckBoxField from "./elements/CheckBoxField";
+import Legend from "./elements/Legend";
+import RadioButton from "./elements/RadioButton";
+import RadioButtonGroup from "./elements/RadioButtonGroup";
 
 
-export default function ExampleForm() {
+export default function FormExample() {
 
   return (
     <Form>
       <Section>
         <Title>Profile</Title>
+        <Paragraph>This information will be displayed publicly so be careful what you share.</Paragraph>
+
         <Grid>
           <div className="sm:col-span-4">
             <Label htmlFor="username">Username</Label>
@@ -34,7 +36,7 @@ export default function ExampleForm() {
           <div className="col-span-full">
             <Label htmlFor="about">About</Label>
             <TextArea id="about" name="about" rows={3}></TextArea>
-            <p className="mt-3 text-sm/6 text-gray-600">Write a few sentences about yourself.</p>
+            <Paragraph>Write a few sentences about yourself.</Paragraph>
           </div>
 
           <div className="col-span-full">

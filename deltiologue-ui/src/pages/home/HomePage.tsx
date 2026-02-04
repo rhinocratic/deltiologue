@@ -1,7 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import ApiCall from "../../components/ApiCall";
 import { useLocation } from "react-router-dom";
-import ExampleForm from "../../components/forms/ExampleForm";
+import FormExample from "../../components/forms/FormExample";
+import PaginationExample from "../../components/pagination/PaginationExample";
 
 export default function HomePage() {
 
@@ -16,11 +17,12 @@ export default function HomePage() {
   return (
     <div>
       <div>Home Page</div>
-      <div>Authenticated: {isAuthenticated ? "true" : "false"}</div>
+      {/* <div>Authenticated: {isAuthenticated ? "true" : "false"}</div>
       <div>User: {user?.name}</div>
-      <div>Pathname: {pathname}</div>
-      <ExampleForm />
-      <ApiCall />
+      <div>Pathname: {pathname}</div> */}
+      {/* <FormExample /> */}
+      <PaginationExample />
+      {/* <ApiCall /> */}
     </div>
   );
 }
