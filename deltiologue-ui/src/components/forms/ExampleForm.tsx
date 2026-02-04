@@ -1,7 +1,4 @@
-import { useId, useState } from "react";
-import { ColorPickerChangeEvent } from "primereact/colorpicker";
 import Button from "../form_elements/Button";
-import ColourPicker from "../form_elements/ColourPicker";
 import Label from "../form_elements/Label";
 import TextField from "../form_elements/TextField";
 import Title from "../form_elements/Title";
@@ -22,45 +19,16 @@ import RadioButton from "../form_elements/RadioButton";
 import RadioButtonGroup from "../form_elements/RadioButtonGroup";
 
 
-export default function TagCategoryForm() {
-
-  const [displayText, setDisplayText] = useState("");
-  const [colour, setColour] = useState("");
-
-  const descriptionId = useId();
-
-  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDisplayText(event.target.value);
-  }
-
-  const handleSetColour = (event: ColorPickerChangeEvent) => {
-    setColour(event.value?.toString() || "");
-  }
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // submit
-  };
+export default function ExampleForm() {
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form>
       <Section>
-        <Title>Create a new tag category</Title>
+        <Title>Profile</Title>
         <Grid>
           <div className="sm:col-span-4">
-            <Label htmlFor="description">Category Name</Label>
-            <TextField
-              name="description"
-              id={descriptionId}
-              value={displayText}
-              placeholder="description"
-              onChange={handleOnChange}
-            />
-          </div>
-
-          <div className="sm:col-span-4">
-            <Label htmlFor="colour">Colour</Label>
-            <ColourPicker name="colour" value={colour} onChange={handleSetColour} />
+            <Label htmlFor="username">Username</Label>
+            <TextField id="username" name="username" placeholder="janesmith" prefix="workcation.com/" />
           </div>
 
           <div className="col-span-full">
@@ -88,31 +56,24 @@ export default function TagCategoryForm() {
           </div>
 
           <div className="sm:col-span-3">
-            <label htmlFor="first-name" className="block text-sm/6 font-medium text-gray-900">First name</label>
-            <div className="mt-2">
-              <input id="first-name" type="text" name="first-name" className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
-            </div>
+            <Label htmlFor="first-name">First name</Label>
+            <TextField id="first-name" name="first-name" />
           </div>
 
           <div className="sm:col-span-3">
-            <label htmlFor="last-name" className="block text-sm/6 font-medium text-gray-900">Last name</label>
-            <div className="mt-2">
-              <input id="last-name" type="text" name="last-name" className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
-            </div>
+            <Label htmlFor="last-name">Last name</Label>
+            <TextField id="last-name" name="last-name" />
           </div>
-
         </Grid>
       </Section>
 
       <Section>
-
         <Title>Notifications</Title>
         <Paragraph>
           We'll always let you know about important changes, but you pick what else you want to hear about.
         </Paragraph>
 
         <FieldSet>
-
           <Legend>By email</Legend>
 
           <CheckBoxField>
@@ -138,7 +99,6 @@ export default function TagCategoryForm() {
               <Paragraph>Get notified when a candidate accepts or rejects an offer.</Paragraph>
             </Explanation>
           </CheckBoxField>
-
         </FieldSet>
 
         <FieldSet>
@@ -146,7 +106,7 @@ export default function TagCategoryForm() {
           <Paragraph>These are delivered via SMS to your mobile phone.</Paragraph>
 
           <RadioButtonGroup>
-            <RadioButton id="push-everything" name="push-notifications">
+            <RadioButton id="push-everything" name="push-notifications" defaultChecked>
               <Label htmlFor="push-everything">
                 Nothing
               </Label>
@@ -165,7 +125,6 @@ export default function TagCategoryForm() {
             </RadioButton>
 
           </RadioButtonGroup>
-
         </FieldSet>
 
       </Section>

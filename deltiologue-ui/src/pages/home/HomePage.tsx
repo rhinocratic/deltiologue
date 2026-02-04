@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import ApiCall from "../../components/ApiCall";
 import { useLocation } from "react-router-dom";
-import TagCategoryForm from "../../components/forms/TagCategoryForm";
+import ExampleForm from "../../components/forms/ExampleForm";
 
 export default function HomePage() {
 
@@ -19,7 +19,7 @@ export default function HomePage() {
       <div>Authenticated: {isAuthenticated ? "true" : "false"}</div>
       <div>User: {user?.name}</div>
       <div>Pathname: {pathname}</div>
-      <TagCategoryForm />
+      <ExampleForm />
       <ApiCall />
     </div>
   );
