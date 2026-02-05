@@ -1,7 +1,5 @@
 import { FunctionComponent, useState } from "react";
-import { ColorPickerChangeEvent } from "primereact/colorpicker";
 import Button from "./elements/Button";
-import ColourPicker from "./elements/ColourPicker";
 import Label from "./elements/Label";
 import TextField from "./elements/TextField";
 import Title from "../text/Title";
@@ -10,22 +8,16 @@ import Form from "./elements/Form";
 import Section from "./elements/Section";
 import FormFields from "./elements/FormFields";
 
-type TagCategoryFormProps = {
+type TagFormProps = {
   name: string;
-  colour: string;
 }
 
-const TagCategoryForm: FunctionComponent<TagCategoryFormProps> = ({ name, colour }) => {
+const TagForm: FunctionComponent<TagFormProps> = ({ name }) => {
 
   const [categoryName, setCategoryName] = useState(name);
-  const [categoryColour, setCategoryColour] = useState(colour);
 
   const handleSetName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCategoryName(event.target.value);
-  }
-
-  const handleSetColour = (event: ColorPickerChangeEvent) => {
-    setCategoryColour(event.value?.toString() || "");
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -36,29 +28,18 @@ const TagCategoryForm: FunctionComponent<TagCategoryFormProps> = ({ name, colour
   return (
     <Form onSubmit={handleSubmit}>
       <Section>
-        <Title>Create a new tag category</Title>
+        <Title>Create a new tag</Title>
         <FormFields>
-
-          <div className="sm:col-span-1">
-            <Label htmlFor="category-colour">Colour</Label>
-            <ColourPicker
-              id="category-colour"
-              value={categoryColour}
-              onChange={handleSetColour}
-            />
-          </div>
-
           <div className="sm:col-span-3">
-            <Label htmlFor="category-name">Name</Label>
+            <Label htmlFor="tag-name">Name</Label>
             <TextField
-              id="category-name"
-              name="category-name"
-              placeholder="category name"
+              id="tag-name"
+              name="tag-name"
+              placeholder="tag name"
               value={categoryName}
               onChange={handleSetName}
             />
           </div>
-
         </FormFields>
       </Section>
 
@@ -70,4 +51,4 @@ const TagCategoryForm: FunctionComponent<TagCategoryFormProps> = ({ name, colour
   );
 }
 
-export default TagCategoryForm;
+export default TagForm;
