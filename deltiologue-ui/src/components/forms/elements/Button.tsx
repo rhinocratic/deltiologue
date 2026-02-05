@@ -10,7 +10,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   Exclusive<["primary", "secondary"], boolean>;
 
 
-const Button: FunctionComponent<ButtonProps> = ({ children, primary, secondary, ...rest }) => {
+const Button: FunctionComponent<ButtonProps> = ({ primary, secondary, children, ...rest }) => {
 
   const classes = className(
     rest.className,

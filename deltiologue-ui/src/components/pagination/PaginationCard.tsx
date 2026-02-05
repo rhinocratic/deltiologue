@@ -8,8 +8,9 @@ type PaginationCardProps = React.HTMLAttributes<HTMLAnchorElement> &
     ellipsis?: boolean;
     prev?: boolean;
     next?: boolean;
+    regular?: boolean;
   }> &
-  Exclusive<["selected", "ellipsis", "prev", "next"], boolean>;
+  Exclusive<["regular", "selected", "ellipsis", "prev", "next"], boolean>
 
 const PaginationCard: FunctionComponent<PaginationCardProps> = ({ selected, ellipsis, prev, next, children, ...rest }) => {
 
@@ -24,9 +25,24 @@ const PaginationCard: FunctionComponent<PaginationCardProps> = ({ selected, elli
     rest.className,
   );
 
+  const content = prev ? <>
+    <span className="sr-only">Previous</span>
+    <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" className="size-5">
+      <path d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" fill-rule="evenodd" />
+    </svg>
+  </>
+    : next ? <>
+      <span className="sr-only">Next</span>
+      <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" className="size-5">
+        <path d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+      </svg>
+    </>
+      : ellipsis ? "…"
+        : children;
+
   return (
-    <a href="#" aria-current="page" {...rest} className={classes}>
-      {children}
+    <a href="#" {... (selected ? { "aria-current": "page" } : {})} {...rest} className={classes}>
+      {content}
     </a>
   )
 }
