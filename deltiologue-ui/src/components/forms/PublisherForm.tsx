@@ -8,16 +8,16 @@ import Form from "./elements/Form";
 import Section from "./elements/Section";
 import FormFields from "./elements/FormFields";
 
-type TagFormProps = {
+type PublisherFormProps = {
   name?: string;
 }
 
-const TagForm: FunctionComponent<TagFormProps> = ({ name }) => {
+const PublisherForm: FunctionComponent<PublisherFormProps> = ({ name }) => {
 
-  const [tagName, setTagName] = useState(name);
+  const [publisherName, setPublisherName] = useState(name);
 
   const handleSetName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTagName(event.target.value);
+    setPublisherName(event.target.value);
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -28,15 +28,15 @@ const TagForm: FunctionComponent<TagFormProps> = ({ name }) => {
   return (
     <Form onSubmit={handleSubmit}>
       <Section>
-        <Title>Create a new tag</Title>
+        <Title>Create a new publisher</Title>
         <FormFields>
           <div className="sm:col-span-3">
-            <Label htmlFor="tag-name">Name</Label>
+            <Label htmlFor="publisher-name">Name</Label>
             <TextField
-              id="tag-name"
-              name="tag-name"
-              placeholder="tag name"
-              value={tagName}
+              id="publisher-name"
+              name="publisher-name"
+              placeholder="publisher name"
+              value={publisherName}
               onChange={handleSetName}
             />
           </div>
@@ -51,4 +51,4 @@ const TagForm: FunctionComponent<TagFormProps> = ({ name }) => {
   );
 }
 
-export default TagForm;
+export default PublisherForm;

@@ -11,8 +11,8 @@ import Section from "./elements/Section";
 import FormFields from "./elements/FormFields";
 
 type TagCategoryFormProps = {
-  name: string;
-  colour: string;
+  name?: string;
+  colour?: string;
 }
 
 const TagCategoryForm: FunctionComponent<TagCategoryFormProps> = ({ name, colour }) => {

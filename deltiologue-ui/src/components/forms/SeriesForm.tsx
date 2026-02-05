@@ -8,16 +8,16 @@ import Form from "./elements/Form";
 import Section from "./elements/Section";
 import FormFields from "./elements/FormFields";
 
-type TagFormProps = {
+type SeriesFormProps = {
   name?: string;
 }
 
-const TagForm: FunctionComponent<TagFormProps> = ({ name }) => {
+const SeriesForm: FunctionComponent<SeriesFormProps> = ({ name }) => {
 
-  const [tagName, setTagName] = useState(name);
+  const [seriesName, setSeriesName] = useState(name);
 
   const handleSetName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTagName(event.target.value);
+    setSeriesName(event.target.value);
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -28,15 +28,15 @@ const TagForm: FunctionComponent<TagFormProps> = ({ name }) => {
   return (
     <Form onSubmit={handleSubmit}>
       <Section>
-        <Title>Create a new tag</Title>
+        <Title>Create a new series</Title>
         <FormFields>
           <div className="sm:col-span-3">
-            <Label htmlFor="tag-name">Name</Label>
+            <Label htmlFor="series-name">Name</Label>
             <TextField
-              id="tag-name"
-              name="tag-name"
-              placeholder="tag name"
-              value={tagName}
+              id="series-name"
+              name="series-name"
+              placeholder="series name"
+              value={seriesName}
               onChange={handleSetName}
             />
           </div>
@@ -51,4 +51,4 @@ const TagForm: FunctionComponent<TagFormProps> = ({ name }) => {
   );
 }
 
-export default TagForm;
+export default SeriesForm;

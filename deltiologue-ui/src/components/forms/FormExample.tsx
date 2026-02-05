@@ -117,26 +117,26 @@ export default function FormExample() {
 
           <CheckBoxField>
             <CheckBox id="comments" name="comments" />
-            <div>
+            <Paragraph>
               <Label htmlFor="comments">Comments</Label>
               <Paragraph small>Get notified when someones posts a comment on a posting.</Paragraph>
-            </div>
+            </Paragraph>
           </CheckBoxField>
 
           <CheckBoxField>
             <CheckBox id="candidates" name="candidates" />
-            <div>
+            <Paragraph>
               <Label htmlFor="candidates">Candidates</Label>
               <Paragraph small>Get notified when a candidate applies for a job.</Paragraph>
-            </div>
+            </Paragraph>
           </CheckBoxField>
 
           <CheckBoxField>
             <CheckBox id="offers" name="offers" />
-            <div>
+            <Paragraph>
               <Label htmlFor="offers">Offers</Label>
               <Paragraph small>Get notified when a candidate accepts or rejects an offer.</Paragraph>
-            </div>
+            </Paragraph>
           </CheckBoxField>
         </FieldSet>
 
