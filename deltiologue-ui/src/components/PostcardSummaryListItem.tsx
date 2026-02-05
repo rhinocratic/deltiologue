@@ -8,9 +8,11 @@ interface PostcardSummaryListItemProps {
 export default function PostcardSummaryListItem({ summary }: PostcardSummaryListItemProps) {
 
   const renderedTags = (summary.tags || []).map((tag) => {
-    return <div key={tag} className="border py-0.5 px-1 text-xs bg-slate-200 rounded">
-      {tag}
-    </div>
+    return (
+      <div key={tag} className="border py-0.5 px-1 text-xs bg-slate-200 rounded">
+        {tag}
+      </div>
+    );
   });
 
   return (

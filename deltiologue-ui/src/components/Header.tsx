@@ -3,7 +3,7 @@ import { MenuItem } from 'primereact/menuitem';
 import { Link, UNSAFE_NavigationContext, useLocation, useNavigate, useNavigation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import NavBar from './NavBar';
-import { Menu } from './menu/Menu';
+import { Menu } from './navigation/Menu';
 
 export default function Header() {
 

@@ -14,6 +14,7 @@ import CheckBox from "./elements/CheckBox";
 import Paragraph from "../text/Paragraph";
 import TextArea from "./elements/TextArea";
 import FileUpload from "./elements/FileUpload";
+import Tag from "../card/Tag";
 
 type Flags = {
   draft: boolean;
@@ -105,6 +106,20 @@ const defaultSeries = {
   name: ""
 };
 
+type Tag = {
+  "tag_id": number;
+  "tag_text": string;
+  "tag_name": string;
+  "category_id": number;
+  "category_text": string;
+  "category_name": string;
+  "colour": string;
+}
+
+type Tags = Tag[];
+
+const defaultTags = Array.of<Tag>();
+
 type Card = {
   subject: Subject;
   flags: Flags;
@@ -114,6 +129,7 @@ type Card = {
   publication_description: string;
   publisher: Publisher;
   series: Series;
+  tags: Tags;
 }
 
 const defaultCard = {
@@ -125,6 +141,7 @@ const defaultCard = {
   publication_description: "",
   publisher: defaultPublisher,
   series: defaultSeries,
+  tags: defaultTags,
 };
 
 type CardProps = {
@@ -149,6 +166,7 @@ const CardForm: FunctionComponent<CardProps> = ({ card }) => {
   const [publicationDescription, setPublicationDescription] = useState(cardState.publication_description);
   const [publisher, setPublisher] = useState(cardState.publisher);
   const [series, setSeries] = useState(cardState.series);
+  const [tags, setTags] = useState(cardState.tags);
 
 
   // Publication date
@@ -223,6 +241,14 @@ const CardForm: FunctionComponent<CardProps> = ({ card }) => {
     const seriesId = Number.parseInt(event.target.value);
     setSeries(seriesId);
   }
+
+  const renderedTags = tags.map((tag) => {
+    return (
+      <Tag key={tag.tag_id} colour="eeffee">
+        {tag.tag_text}
+      </Tag>
+    );
+  });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -367,7 +393,7 @@ const CardForm: FunctionComponent<CardProps> = ({ card }) => {
             />
             <div>
               <Label htmlFor="rp">RP</Label>
-              <Paragraph small>Is the card RP?</Paragraph>
+              <Paragraph small>Does the card feature a real photograph?</Paragraph>
             </div>
           </CheckBoxField>
 
@@ -488,6 +514,23 @@ const CardForm: FunctionComponent<CardProps> = ({ card }) => {
               value={recipientAddress}
               onChange={handleSetRecipientAddress}
             />
+          </div>
+        </FormFields>
+      </Section>
+
+      <Section>
+        <FormFields>
+          <div className="sm:col-span-4 sm:col-start-1">
+            <Label htmlFor="tags">Tags</Label>
+            <div>{renderedTags}</div>
+            {/* <TextArea
+              id="tags"
+              name="tags"
+              placeholder="tags"
+              rows={3}
+              value={tags}
+              onChange={handleSetTags}
+            /> */}
           </div>
         </FormFields>
       </Section>
