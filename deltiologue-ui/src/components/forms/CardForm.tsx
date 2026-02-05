@@ -446,7 +446,7 @@ const CardForm: FunctionComponent<CardProps> = ({ card }) => {
               id="publisher"
               name="publisher"
               placeholder="publisher"
-              value={publisher}
+              value={publisher.name}
               onChange={handleSetPublisher}
             />
           </div>
@@ -457,7 +457,7 @@ const CardForm: FunctionComponent<CardProps> = ({ card }) => {
               id="series"
               name="series"
               placeholder="series"
-              value={series}
+              value={series.name}
               onChange={handleSetSeries}
             />
           </div>
