@@ -20,8 +20,8 @@ export default function HomePage() {
       {/* <div>Authenticated: {isAuthenticated ? "true" : "false"}</div>
       <div>User: {user?.name}</div>
       <div>Pathname: {pathname}</div> */}
-      {/* <FormExample /> */}
-      <PaginationExample />
+      <FormExample />
+      {/* <PaginationExample /> */}
       {/* <ApiCall /> */}
     </div>
   );
