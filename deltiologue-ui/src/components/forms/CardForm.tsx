@@ -14,7 +14,7 @@ import CheckBox from "./elements/CheckBox";
 import Paragraph from "../text/Paragraph";
 import TextArea from "./elements/TextArea";
 import FileUpload from "./elements/FileUpload";
-import Tag from "../card/Tag";
+import Tag, { TagSpec } from "../card/Tag";
 
 type Flags = {
   draft: boolean;
@@ -106,19 +106,9 @@ const defaultSeries = {
   name: ""
 };
 
-type Tag = {
-  "tag_id": number;
-  "tag_text": string;
-  "tag_name": string;
-  "category_id": number;
-  "category_text": string;
-  "category_name": string;
-  "colour": string;
-}
+type Tags = TagSpec[];
 
-type Tags = Tag[];
-
-const defaultTags = Array.of<Tag>();
+const defaultTags = Array.of<TagSpec>();
 
 type Card = {
   subject: Subject;
@@ -244,7 +234,7 @@ const CardForm: FunctionComponent<CardProps> = ({ card }) => {
 
   const renderedTags = tags.map((tag) => {
     return (
-      <Tag key={tag.tag_id} colour="eeffee">
+      <Tag key={tag.tag_id} tag={tag}>
         {tag.tag_text}
       </Tag>
     );
@@ -522,15 +512,7 @@ const CardForm: FunctionComponent<CardProps> = ({ card }) => {
         <FormFields>
           <div className="sm:col-span-4 sm:col-start-1">
             <Label htmlFor="tags">Tags</Label>
-            <div>{renderedTags}</div>
-            {/* <TextArea
-              id="tags"
-              name="tags"
-              placeholder="tags"
-              rows={3}
-              value={tags}
-              onChange={handleSetTags}
-            /> */}
+            <div className="grid grid-cols-6 gap-3">{renderedTags}</div>
           </div>
         </FormFields>
       </Section>
