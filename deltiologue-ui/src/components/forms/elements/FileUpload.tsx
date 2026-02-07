@@ -6,8 +6,10 @@ const FileUpload: FunctionComponent<React.InputHTMLAttributes<HTMLInputElement>>
   const [file, setFile] = useState<File>();
   const [bgColour, setBgColour] = useState("ffffff");
 
+  const imageTypes = new Set(["image/jpeg", "image/png", "image/gif"]);
+
   const isImageFile = (f: File) => {
-    return f.type.startsWith("image/");
+    return imageTypes.has(f.type) && f.size < 1.5e7;
   }
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
@@ -73,7 +75,7 @@ const FileUpload: FunctionComponent<React.InputHTMLAttributes<HTMLInputElement>>
               </label>
               <p className="pl-1">or drag and drop</p>
             </div>
-            <p className="text-xs/5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
+            <p className="text-xs/5 text-gray-600">PNG, JPG, GIF up to 15MB</p>
           </div>
       }
     </div>
