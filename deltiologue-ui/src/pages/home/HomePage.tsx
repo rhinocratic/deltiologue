@@ -259,7 +259,7 @@ export default function HomePage() {
   return (
     <div>
       <div>Home Page</div>
-      <CardForm card={card} />
+      <CardForm card={undefined} />
       {/* <div>Authenticated: {isAuthenticated ? "true" : "false"}</div>
       <div>User: {user?.name}</div>
       <div>Pathname: {pathname}</div> */}
